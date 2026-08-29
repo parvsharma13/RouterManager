@@ -1,6 +1,6 @@
 # Gates: Hyperoptic mobile redesign
 
-OWNS: GATES.md, PRODUCT.md, DESIGN.md, README.md, package.json, package-lock.json, packages/shared/**, packages/frontend/**, scripts/**, artifacts/**
+OWNS: GATES.md, PRODUCT.md, DESIGN.md, README.md, package.json, package-lock.json, packages/shared/**, packages/frontend/**, scripts/**, RouterManager-v1.0.apk
 
 Scope: ship a standalone, mobile-first Hyperoptic router app with four-tab navigation, trustworthy compatibility gating, local activity and diagnostics, documented feature tiers, and a signed APK.
 
@@ -40,15 +40,15 @@ Scope: ship a standalone, mobile-first Hyperoptic router app with four-tab navig
   EVIDENCE: exit=0; shell=/bin/sh; cwd=/Users/parvsharma/Documents/Development/RouterManager; path=805ebf77119d/24 entries; EXPECT=matched; output-sha256=702fb526dbef1572aec8eab60d3411a98a730f2b6683695fb727f9b86c9c844d; output-bytes=22825
 
 - [x] G7: key screens pass visual review at phone, tablet, desktop, light, and dark dimensions
-  EVIDENCE: manual — reviewed Home, Devices, Device detail, Activity, Settings hub, Wi-Fi,
+  EVIDENCE: manual. Reviewed Home, Devices, Device detail, Activity, Settings hub, Wi-Fi,
   Profiles, About & compatibility, Diagnostics, and Notifications via a Playwright pass
   against the dev server (mocked API responses, seeded session) at 390x844 (phone),
-  820x1180 (tablet), and 1280x800 (desktop), each in light and dark where applicable — 32
-  screenshots, zero console errors. Two real defects found and fixed during this pass:
-  (1) the warning-state StatusPill paired near-white text with a near-white tinted
-  background in light mode (illegible "Paused"/"Experimental" pills) — fixed in
-  mobile-ui.tsx to use `text-warning` instead of `text-warning-foreground`; (2) the
+  820x1180 (tablet), and 1280x800 (desktop), each in light and dark where applicable: 32
+  screenshots, zero console errors. Two real defects found and fixed during this pass.
+  (1) The warning-state StatusPill paired near-white text with a near-white tinted
+  background in light mode (illegible "Paused"/"Experimental" pills), fixed in
+  mobile-ui.tsx to use `text-warning` instead of `text-warning-foreground`. (2) The
   browser/dev-mode login and session-restore path unconditionally called the native-only
   RouterHttp plugin, which has no web implementation, so `npm run dev` + browser login was
-  completely broken — fixed in AuthContext.tsx to branch on Capacitor.isNativePlatform()
+  completely broken, fixed in AuthContext.tsx to branch on Capacitor.isNativePlatform()
   and use the backend's /api/auth/login on web. Re-verified clean after both fixes.

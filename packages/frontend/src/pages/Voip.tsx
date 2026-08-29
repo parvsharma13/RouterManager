@@ -22,7 +22,7 @@ export function Voip() {
   return (
     <FeatureGate oid="sip_account">
       <div>
-        <PageHeader eyebrow="Connected services" title="VoIP" description="Read-only — these lines are provisioned by your ISP, not editable from this app." />
+        <PageHeader eyebrow="Connected services" title="VoIP" description="Read-only. These lines are provisioned by your ISP, not editable from this app." />
         {error && <ErrorState message={error} />}
         {!lines && !error && <LoadingState rows={2} />}
         {lines && (
@@ -39,7 +39,7 @@ export function Voip() {
                 {lines.map((l) => (
                   <TableRow key={l.index}>
                     <TableCell>{l.index}</TableCell>
-                    <TableCell>{l.directoryNumber || '—'}</TableCell>
+                    <TableCell>{l.directoryNumber || '-'}</TableCell>
                     <TableCell>
                       <Badge variant="outline" className={l.enable ? 'border-success/30 text-success' : ''}>
                         {l.status || (l.enable ? 'Enabled' : 'Disabled')}

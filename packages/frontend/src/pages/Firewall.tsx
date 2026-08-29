@@ -23,7 +23,7 @@ export function Firewall() {
   return (
     <FeatureGate oid="firewall_acl">
       <div>
-        <PageHeader eyebrow="Network" title="Firewall & security" description="Read-only — this app doesn't yet write firewall rules on this router." />
+        <PageHeader eyebrow="Network" title="Firewall & security" description="Read-only. This app doesn't yet write firewall rules on this router." />
         <div className="space-y-4">
           {error && <ErrorState message={error} />}
           {!data && !error && <LoadingState rows={3} />}

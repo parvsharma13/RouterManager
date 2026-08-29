@@ -44,14 +44,14 @@ function askHidden(question: string): Promise<string> {
 }
 
 async function main() {
-  console.log('RouterManager credential setup — the admin password is stored only in macOS Keychain, never on disk.\n');
+  console.log('RouterManager credential setup: the admin password is stored only in macOS Keychain, never on disk.\n');
 
   const baseUrl = await ask('Router base URL', 'https://192.168.1.1');
   const username = await ask('Admin username', 'admin');
   const password = await askHidden('Admin password (input hidden)');
 
   if (!password) {
-    console.error('No password entered — aborting.');
+    console.error('No password entered, aborting.');
     process.exit(1);
   }
 

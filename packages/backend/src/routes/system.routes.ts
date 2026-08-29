@@ -11,7 +11,7 @@ systemRoutes.get(
   asyncRoute(async (_req, res) => {
     const [account, remoteManagement] = await Promise.all([
       getAdminAccountInfo(routerClient),
-      getRemoteManagementInfo(routerClient), // display-only — see docs/api-notes.md, never written to
+      getRemoteManagementInfo(routerClient), // display-only, see docs/api-notes.md, never written to
     ]);
     res.json({ account, remoteManagement });
   })

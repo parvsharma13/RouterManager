@@ -25,12 +25,12 @@ interface RawResponse {
 }
 
 // Implements the login/session/DAL protocol documented in docs/api-notes.md.
-// Single module-level singleton (see config/credentials.ts + index.ts) — this app is
+// Single module-level singleton (see config/credentials.ts + index.ts): this app is
 // single-tenant and local-only, so one long-lived authenticated session is all we need.
 export class RouterClient {
   private session: RouterSession | null = null;
   private loginInFlight: Promise<void> | null = null;
-  // Reused across every request instead of a fresh TCP+TLS handshake each time — the
+  // Reused across every request instead of a fresh TCP+TLS handshake each time: the
   // router is a small embedded IAD, and opening a new connection per request (which is
   // what a plain https.request without a shared keep-alive agent does) is enough load,
   // under a handful of concurrent page loads, to make its own web server time out on us.
@@ -96,7 +96,7 @@ export class RouterClient {
     try {
       publicKey = JSON.parse(rsaRes.body).RSAPublicKey;
     } catch {
-      throw new RouterUnreachableError('Unexpected response fetching RSA public key — is this the expected router?');
+      throw new RouterUnreachableError('Unexpected response fetching RSA public key (is this the expected router?)');
     }
 
     const loginPayload = JSON.stringify({
@@ -129,7 +129,7 @@ export class RouterClient {
       throw new RouterAuthError('Login response was not valid JSON');
     }
     if (!parsed.content || !parsed.iv || !cookie) {
-      throw new RouterAuthError('Login response missing expected fields — credentials rejected or router changed');
+      throw new RouterAuthError('Login response missing expected fields: credentials rejected or router changed');
     }
 
     const decrypted = JSON.parse(aesDecrypt(parsed.content, aesKey, Buffer.from(parsed.iv, 'base64')));
@@ -154,7 +154,7 @@ export class RouterClient {
     return this.session;
   }
 
-  /** GET /cgi-bin/DAL?oid=<oid> — see docs/api-notes.md */
+  /** GET /cgi-bin/DAL?oid=<oid> (see docs/api-notes.md) */
   async daoGet<T = unknown>(oid: string): Promise<T> {
     return this.withRetry(async () => {
       const session = await this.ensureSession();
@@ -165,7 +165,7 @@ export class RouterClient {
     });
   }
 
-  /** POST or PUT /cgi-bin/DAL?oid=<oid> with an AES-encrypted JSON body — see docs/api-notes.md */
+  /** POST or PUT /cgi-bin/DAL?oid=<oid> with an AES-encrypted JSON body (see docs/api-notes.md) */
   async daoSet<T = unknown>(oid: string, payload: unknown, method: 'POST' | 'PUT' = 'PUT'): Promise<T> {
     return this.withRetry(async () => {
       const session = await this.ensureSession();
@@ -181,7 +181,7 @@ export class RouterClient {
     });
   }
 
-  /** Non-DAL /cgi-bin/<name> endpoints (Reboot, PasswordReset, ...) — same encrypted-body convention. */
+  /** Non-DAL /cgi-bin/<name> endpoints (Reboot, PasswordReset, ...): same encrypted-body convention. */
   async cgiCall<T = unknown>(name: string, payload?: unknown): Promise<T> {
     return this.withRetry(async () => {
       const session = await this.ensureSession();
@@ -221,7 +221,7 @@ export class RouterClient {
     } catch (err) {
       // A non-ZCFG_SUCCESS result usually does mean "unsupported oid" (that's how we built
       // the capability map), but we've also seen it happen when the session went stale for
-      // an oid we know is supported — the router doesn't send a distinct auth-failure shape
+      // an oid we know is supported; the router doesn't send a distinct auth-failure shape
       // we can detect, it just answers the still-encrypted request with an error result. So
       // treat it the same as an auth failure: force a fresh login and retry once before
       // concluding the feature is actually unsupported.

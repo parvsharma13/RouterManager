@@ -106,7 +106,7 @@ export function PortForwarding() {
         />
 
         <div className="space-y-4">
-          {!writable && <p className="text-xs text-muted-foreground">Adding rules is disabled until this router model and firmware are verified — see Settings › About & compatibility.</p>}
+          {!writable && <p className="text-xs text-muted-foreground">Adding rules is disabled until this router model and firmware are verified. See Settings › About & compatibility.</p>}
           {error && <ErrorState message={error} />}
           {!rules && !error && <LoadingState rows={3} />}
 

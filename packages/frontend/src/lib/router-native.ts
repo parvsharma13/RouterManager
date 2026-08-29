@@ -17,6 +17,6 @@ interface AppPrefsPlugin {
 }
 
 // Mirrors notification preferences into native SharedPreferences and (de)schedules the
-// WorkManager background check — see AppPrefsPlugin.java. A background job has no webview
+// WorkManager background check (see AppPrefsPlugin.java). A background job has no webview
 // to call back into, so this is the only way it learns what the user configured.
 export const nativeAppPrefs = registerPlugin<AppPrefsPlugin>('AppPrefs');

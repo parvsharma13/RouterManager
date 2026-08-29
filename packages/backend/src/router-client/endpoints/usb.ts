@@ -1,7 +1,7 @@
 import type { UsbDeviceStatus } from '@router-manager/shared';
 import type { RouterClient } from '../RouterClient.js';
 
-// oid=usb_info — see docs/api-notes.md. Field names include literal spaces
+// oid=usb_info: see docs/api-notes.md. Field names include literal spaces
 // ("Service Conf", "Usb Info") in the raw response, so this stays a passthrough
 // rather than a strict remapped type.
 interface UsbInfoDal {

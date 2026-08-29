@@ -74,7 +74,7 @@ export function Qos() {
                       <Input type="number" {...register('downRate', { valueAsNumber: true })} />
                     </div>
                   </div>
-                  {!canWrite('qos') && <p className="text-xs text-muted-foreground">Saving is disabled until this router model and firmware are verified — see Settings › About & compatibility.</p>}
+                  {!canWrite('qos') && <p className="text-xs text-muted-foreground">Saving is disabled until this router model and firmware are verified. See Settings › About & compatibility.</p>}
                   <Button type="submit" disabled={formState.isSubmitting || !canWrite('qos')} className="w-full">
                     Save
                   </Button>

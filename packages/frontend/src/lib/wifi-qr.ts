@@ -1,7 +1,7 @@
 import QRCode from 'qrcode';
 
 // Standard WIFI: URI format (used by iOS/Android camera scanners). Generated and rendered
-// entirely client-side — the PSK never leaves the browser, no network call involved.
+// entirely client-side: the PSK never leaves the browser, no network call involved.
 function escapeWifiField(value: string): string {
   return value.replace(/([\\;,":])/g, '\\$1');
 }

@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 const GUIDANCE: Record<DiagnosticCheck['key'], string> = {
   router: 'Move closer to your router, or confirm your phone is on the same Wi-Fi network.',
   wan: "Check your Hyperoptic ONT/fibre socket and try restarting the router from Settings › Administrator.",
-  dns: 'DNS not reporting is usually temporary — run the check again in a minute.',
+  dns: 'DNS not reporting is usually temporary. Run the check again in a minute.',
 };
 
 function CheckRow({ check }: { check: DiagnosticCheck }) {

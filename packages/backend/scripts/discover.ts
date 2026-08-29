@@ -1,5 +1,5 @@
 // Standing regression tool for the reverse-engineered API documented in docs/api-notes.md.
-// Re-run this any time the router's firmware may have auto-updated, to catch drift early —
+// Re-run this any time the router's firmware may have auto-updated, to catch drift early:
 // log any changes you find into api-notes.md's changelog.
 import { loadCredentials } from '../src/config/credentials.js';
 import { RouterClient } from '../src/router-client/RouterClient.js';
@@ -21,7 +21,7 @@ const OIDS = [
   'tr69',
 ];
 
-const PACE_MS = 150; // don't hammer the router — repeated failed/rapid logins can lock out admin access
+const PACE_MS = 150; // don't hammer the router; repeated failed/rapid logins can lock out admin access
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 async function main() {
@@ -63,7 +63,7 @@ async function main() {
   const errored = results.filter((r) => r.status === 'error').length;
   console.log(`\n${ok} ok, ${unsupported} unsupported, ${errored} errored (of ${results.length} probed).`);
   if (errored > 0) {
-    console.log('Errors indicate either a genuine network/auth problem, or firmware drift — check against docs/api-notes.md.');
+    console.log('Errors indicate either a genuine network/auth problem, or firmware drift; check against docs/api-notes.md.');
   }
 }
 

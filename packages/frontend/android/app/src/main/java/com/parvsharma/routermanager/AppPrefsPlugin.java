@@ -15,7 +15,7 @@ import com.getcapacitor.annotation.PermissionCallback;
 /**
  * Native-side mirror of the notification preferences the JS layer keeps in its own
  * encrypted SQLite store (see local-data.ts), plus the Android 13+ notification
- * permission dance. DeviceCheckWorker — a background WorkManager job with no webview —
+ * permission dance. DeviceCheckWorker (a background WorkManager job with no webview)
  * reads what this plugin writes; there's no other way for it to see these settings.
  */
 @CapacitorPlugin(

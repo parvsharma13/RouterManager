@@ -13,7 +13,7 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      // The frontend never talks to the router directly — only to this backend, which
+      // The frontend never talks to the router directly, only to this backend, which
       // holds the authenticated router session server-side. See docs/api-notes.md.
       '/api': {
         target: 'http://localhost:4001',

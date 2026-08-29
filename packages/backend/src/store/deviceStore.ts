@@ -71,7 +71,7 @@ export function clearGroupFromDevices(groupId: number): void {
 }
 
 // --- New-device detection, join history & online/offline transitions ---
-// Called opportunistically whenever /api/devices is fetched — no background loop needed,
+// Called opportunistically whenever /api/devices is fetched: no background loop needed,
 // consistent with the app's on-demand design. Returns whether this MAC was seen for the
 // first time by this app (i.e. genuinely new), and logs a device_events row for a first
 // sighting or an active-state flip since the last fetch.

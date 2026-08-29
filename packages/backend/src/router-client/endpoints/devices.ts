@@ -1,7 +1,7 @@
 import type { DeviceEntry } from '@router-manager/shared';
 import type { RouterClient } from '../RouterClient.js';
 
-// oid=lanhosts — see docs/api-notes.md.
+// oid=lanhosts: see docs/api-notes.md.
 interface LanHostsDal {
   Object: Array<{
     wanInfo?: unknown;

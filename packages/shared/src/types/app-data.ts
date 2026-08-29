@@ -1,4 +1,4 @@
-// App-owned data: the router has no concept of "groups" or "policies" — everything in
+// App-owned data: the router has no concept of "groups" or "policies"; everything in
 // this file is stored and enforced by this app, not the router's own DAL/OID system.
 // See docs/api-notes.md's paren_ctl/wlan_sch_access/scheduler entries for the native
 // enforcement path a Policy tries to use before falling back to "unenforced".
@@ -15,7 +15,7 @@ export type DeviceIcon =
   | 'iot'
   | 'other';
 
-// Local per-device overlay, keyed by MAC — merged onto the router's live lanhosts data.
+// Local per-device overlay, keyed by MAC, merged onto the router's live lanhosts data.
 export interface DeviceOverlay {
   macAddress: string;
   customName: string | null;
@@ -61,7 +61,7 @@ interface PolicyBase {
   enabled: boolean;
   // Whether the last write to the router's own schedule/parental-control OID succeeded.
   // 'unenforced' means this policy is only tracked locally and isn't actually blocking
-  // anything on the network yet — the UI should say so plainly rather than imply it works.
+  // anything on the network yet; the UI should say so plainly rather than imply it works.
   enforcement: 'native' | 'unenforced';
   createdAt: string;
   updatedAt: string;

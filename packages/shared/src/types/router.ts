@@ -49,7 +49,7 @@ export interface DdnsConfig {
   provider: string;
   hostname: string;
   username: string;
-  // password intentionally omitted from the read type — write-only field
+  // password intentionally omitted from the read type (write-only field)
 }
 
 export interface FirewallRule {
@@ -57,7 +57,7 @@ export interface FirewallRule {
   enable: boolean;
   name: string;
   action: string;
-  [key: string]: unknown; // shape not yet fully confirmed live — see docs/api-notes.md
+  [key: string]: unknown; // shape not yet fully confirmed live, see docs/api-notes.md
 }
 
 export interface QosSettings {
@@ -78,7 +78,7 @@ export interface VoipLineStatus {
 
 export interface UsbDeviceStatus {
   connected: boolean;
-  raw: unknown; // shape not yet fully confirmed live — see docs/api-notes.md
+  raw: unknown; // shape not yet fully confirmed live, see docs/api-notes.md
 }
 
 export type CapabilityStatus = 'supported' | 'unsupported' | 'unknown';

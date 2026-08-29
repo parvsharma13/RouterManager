@@ -27,7 +27,7 @@ export const OID_LABELS: Record<string, string> = {
 
 export const PROBED_OIDS = Object.keys(OID_LABELS);
 
-// OIDs this app only ever reads — never routes a write through them, on any router.
+// OIDs this app only ever reads, never routes a write through them, on any router.
 const READ_ONLY_OIDS = new Set([
   'status', 'wan', 'lanhosts', 'firewall_acl', 'cyber_secure', 'sip_account', 'usb_info', 'tr69',
 ]);
@@ -46,7 +46,7 @@ export function compatibilityMessage(level: RouterSupportLevel): string {
 }
 
 // The write ceiling this app offers for a given OID at a given router support tier. Only
-// Wi-Fi writes have been confirmed live against real hardware — every other write stays
+// Wi-Fi writes have been confirmed live against real hardware; every other write stays
 // blocked until it is verified the same way, whatever the model classifies as.
 export function writeStatusFor(oid: string, level: RouterSupportLevel): FeatureWriteStatus {
   if (READ_ONLY_OIDS.has(oid)) return 'not-applicable';

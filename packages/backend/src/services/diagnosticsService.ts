@@ -3,7 +3,7 @@ import { RouterClient } from '../router-client/RouterClient.js';
 import { getWanStatus } from '../router-client/endpoints/wan.js';
 import { recordEvent } from '../store/eventStore.js';
 
-// Tracked in-process only (this app has no background poller — see deviceStore.ts's
+// Tracked in-process only (this app has no background poller; see deviceStore.ts's
 // on-demand design note) so an offline→online flip is logged only when someone actually
 // runs a check, not inferred from silence.
 let lastWanConnected: boolean | null = null;

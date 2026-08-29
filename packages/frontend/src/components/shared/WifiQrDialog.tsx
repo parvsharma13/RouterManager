@@ -12,8 +12,8 @@ interface WifiQrDialogProps {
 }
 
 // Renders a WiFi QR code entirely client-side (the `qrcode` package, no network call) so a
-// guest can scan-to-join without anyone reading the password aloud — eero's most-used
-// sharing feature, and here it costs nothing extra since the SSID/PSK are already in hand.
+// guest can scan-to-join without anyone reading the password aloud (eero's most-used
+// sharing feature), and here it costs nothing extra since the SSID/PSK are already in hand.
 export function WifiQrDialog({ ssid, psk, securityMode, hidden }: WifiQrDialogProps) {
   const [open, setOpen] = useState(false);
   const [dataUrl, setDataUrl] = useState<string | null>(null);
@@ -43,7 +43,7 @@ export function WifiQrDialog({ ssid, psk, securityMode, hidden }: WifiQrDialogPr
             <div className="h-60 w-60 animate-pulse rounded-md border bg-muted" />
           )}
           <p className="text-center text-sm text-muted-foreground">
-            Generated on this device — the password isn't sent anywhere.
+            Generated on this device. The password isn't sent anywhere.
           </p>
         </div>
       </DialogContent>

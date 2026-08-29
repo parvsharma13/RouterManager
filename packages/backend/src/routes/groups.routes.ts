@@ -50,7 +50,7 @@ groupsRoutes.delete(
   '/groups/:id',
   asyncRoute(async (req, res) => {
     const id = Number(req.params.id);
-    // Devices in the group aren't deleted — they just fall out of the group (matches the
+    // Devices in the group aren't deleted, they just fall out of the group (matches the
     // ON DELETE SET NULL foreign key, made explicit here so callers don't need to know that).
     clearGroupFromDevices(id);
     const ok = deleteGroup(id);

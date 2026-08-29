@@ -41,7 +41,7 @@ export async function detectCapabilities(client: RouterClient, forceRefresh = fa
 
 async function probeAll(client: RouterClient): Promise<RouterState> {
   // Router identity gates every write decision below, so it's read before the OID sweep
-  // rather than folded into it — see docs/api-notes.md's status/DeviceInfo entry.
+  // rather than folded into it. See docs/api-notes.md's status/DeviceInfo entry.
   const system = await getSystemInfo(client);
   const level = classifyRouterSupport(system.modelName);
   const compatibility: RouterCompatibility = {

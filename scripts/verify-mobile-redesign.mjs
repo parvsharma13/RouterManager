@@ -49,7 +49,7 @@ for (const file of pagesAndComponents) {
 }
 assert(linkedTargets.size >= 10, `Expected to find a substantial number of literal link targets to check, only found ${linkedTargets.size}`);
 for (const target of linkedTargets) {
-  assert(routeExistsFor(target), `Link target ${target} has no matching <Route> in App.tsx — dead navigation`);
+  assert(routeExistsFor(target), `Link target ${target} has no matching <Route> in App.tsx: dead navigation`);
 }
 
 // Negative control: an invented path must NOT appear to resolve, proving the checker can fail.

@@ -1,7 +1,7 @@
 import type { WlanBand } from '@router-manager/shared';
 import type { RouterClient } from '../RouterClient.js';
 
-// oid=wlan — see docs/api-notes.md. One element per band/SSID.
+// oid=wlan: see docs/api-notes.md. One element per band/SSID.
 interface WlanDalEntry {
   Index: number;
   SSID: string;
@@ -42,7 +42,7 @@ export interface WlanUpdate {
   hidden?: boolean;
 }
 
-// Write shape not yet confirmed live (see docs/api-notes.md) — this mirrors the GET field
+// Write shape not yet confirmed live (see docs/api-notes.md); this mirrors the GET field
 // names as a best-effort first attempt. Verify against the stock GUI before trusting it,
 // per the plan's Phase 3 verification approach, and adjust field names here if the router
 // rejects it or the change doesn't take.

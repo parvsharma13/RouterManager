@@ -100,7 +100,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     // Web/dev mode: "server address" is the backend origin (proxied /api to the Express
-    // server holding the real router session) — see README's "For contributors" section.
+    // server holding the real router session). See README's "For contributors" section.
     const serverUrl = input.serverUrl.trim().replace(/\/$/, '') || window.location.origin;
     try {
       configureApi(serverUrl);

@@ -58,7 +58,7 @@ export function System() {
         {data && (
           <>
             <RawJsonCard title="Admin account" data={data.account} />
-            <RawJsonCard title="Remote management (read-only — ISP managed)" data={data.remoteManagement} />
+            <RawJsonCard title="Remote management (read-only, ISP managed)" data={data.remoteManagement} />
 
             <Card className="border-destructive/30">
               <CardHeader>
@@ -78,7 +78,7 @@ export function System() {
                     <Label>Confirm new password</Label>
                     <Input type="password" autoComplete="new-password" disabled={!writable} {...register('confirmPassword', { required: true })} />
                   </div>
-                  {!writable && <p className="text-xs text-muted-foreground">Not yet available — password changes aren't confirmed to work on this router's firmware yet.</p>}
+                  {!writable && <p className="text-xs text-muted-foreground">Not yet available. Password changes aren't confirmed to work on this router's firmware yet.</p>}
                   <ConfirmDialog
                     trigger={
                       <Button type="button" variant="destructive" disabled={!writable} className="w-full">
@@ -86,7 +86,7 @@ export function System() {
                       </Button>
                     }
                     title="Change the router admin password?"
-                    description="Make sure you've saved the new password somewhere — if this fails partway, you could lose access to both the router GUI and this app until you reset the router. Also remember to run `npm run setup:credentials` afterward so this app's stored credential stays in sync."
+                    description="Make sure you've saved the new password somewhere; if this fails partway, you could lose access to both the router GUI and this app until you reset the router. Also remember to run `npm run setup:credentials` afterward so this app's stored credential stays in sync."
                     confirmLabel="Yes, change it"
                     destructive
                     onConfirm={handleSubmit(submitPasswordChange)}

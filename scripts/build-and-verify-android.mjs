@@ -13,18 +13,18 @@ function run(command, args, label) {
 }
 
 // 1. Build and sign the release APK. Requires packages/frontend/android/keystore.properties
-// to already point at a real keystore — see README.md's "Release signing" section.
+// to already point at a real keystore. See README.md's "Release signing" section.
 run('npm', ['run', 'android:release'], 'Build signed release APK');
 
 // 2. Publish it to the path the README tells users to install from.
 const builtApk = 'packages/frontend/android/app/build/outputs/apk/release/app-release.apk';
-const publishedApk = 'artifacts/RouterManager-v1.0.apk';
+const publishedApk = 'RouterManager-v1.0.apk';
 if (!fs.existsSync(builtApk)) throw new Error(`Expected release APK at ${builtApk} after a successful build`);
 fs.mkdirSync(path.dirname(publishedApk), { recursive: true });
 fs.copyFileSync(builtApk, publishedApk);
 console.log(`\nCopied ${builtApk} -> ${publishedApk}`);
 
-// 3. Re-run every existing Android gate against the freshly built artifact — standalone
+// 3. Re-run every existing Android gate against the freshly built artifact: standalone
 // boundary, native security posture, protocol markers, and the signed APK itself.
 run('node', ['scripts/verify-standalone-android.mjs'], 'Verify standalone boundary');
 run('node', ['scripts/verify-android-security.mjs'], 'Verify native security posture');

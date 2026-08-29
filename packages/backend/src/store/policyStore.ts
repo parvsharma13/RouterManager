@@ -3,7 +3,7 @@ import { db } from './db.js';
 
 export class PolicyConflictError extends Error {
   constructor(targetType: string, targetId: string, type: string) {
-    super(`A "${type}" policy already exists for ${targetType} "${targetId}" — update or delete it instead.`);
+    super(`A "${type}" policy already exists for ${targetType} "${targetId}". Update or delete it instead.`);
     this.name = 'PolicyConflictError';
   }
 }

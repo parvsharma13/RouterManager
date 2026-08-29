@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import { spawnSync } from 'node:child_process';
 
-const apk = 'artifacts/RouterManager-v1.0.apk';
+const apk = 'RouterManager-v1.0.apk';
 const sdk = process.env.ANDROID_HOME || '/opt/homebrew/share/android-commandlinetools';
 const buildTools = `${sdk}/build-tools/36.0.0`;
 const javaHome = process.env.JAVA_HOME || '/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home';

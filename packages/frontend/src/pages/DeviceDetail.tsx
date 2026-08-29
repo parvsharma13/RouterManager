@@ -169,14 +169,14 @@ export function DeviceDetail() {
                   </div>
                   <div className="space-y-1.5">
                     <Label htmlFor="notes">Notes</Label>
-                    <Textarea id="notes" placeholder="Optional — e.g. 'kitchen speaker'" {...register('notes', { maxLength: 500 })} />
+                    <Textarea id="notes" placeholder="Optional (e.g. 'kitchen speaker')" {...register('notes', { maxLength: 500 })} />
                   </div>
                   <Button type="submit" disabled={formState.isSubmitting} className="w-full">
                     Save changes
                   </Button>
                 </form>
               </Surface>
-              <p className="mt-3 px-1 text-xs leading-5 text-muted-foreground">Saved only on this phone — the router itself has no concept of nicknames, icons, or profiles.</p>
+              <p className="mt-3 px-1 text-xs leading-5 text-muted-foreground">Saved only on this phone. The router itself has no concept of nicknames, icons, or profiles.</p>
             </div>
           </div>
         </>

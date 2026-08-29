@@ -1,9 +1,9 @@
 import type { SpeedTestResult } from '@router-manager/shared';
 
-// No confirmed router-native speed-test/diagnostics OID exists on this device — the full
+// No confirmed router-native speed-test/diagnostics OID exists on this device: the full
 // known + suspected OID catalogue in docs/api-notes.md has nothing that matches, and TR-069
 // (tr69) diagnostics are explicitly off-limits (ISP-managed, read-only by design). So this
-// measures from the backend process itself — the Node server on the LAN, not the browser —
+// measures from the backend process itself (the Node server on the LAN, not the browser)
 // against Cloudflare's public speed-test endpoints (the same ones several open-source
 // speed-test CLIs use). That's closer to "the router's-eye view" of the connection than an
 // in-browser test would be, and sidesteps CORS entirely. If a hidden native diagnostics OID
@@ -49,14 +49,14 @@ async function measureUpload(): Promise<number | null> {
     });
     return mbps(payload.byteLength, performance.now() - start);
   } catch {
-    // Upload-endpoint behavior/availability isn't guaranteed the way download is — don't
+    // Upload-endpoint behavior/availability isn't guaranteed the way download is; don't
     // fail the whole test just because upload couldn't be measured.
     return null;
   }
 }
 
 export async function runSpeedTest(): Promise<SpeedTestResult> {
-  // Sequential, not parallel — running these concurrently would have them contend for the
+  // Sequential, not parallel: running these concurrently would have them contend for the
   // same bandwidth and skew each other's numbers.
   const pingMs = await measurePing();
   const downloadMbps = await measureDownload();

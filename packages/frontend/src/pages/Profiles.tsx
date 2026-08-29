@@ -55,7 +55,7 @@ export function Profiles() {
       <PageHeader
         eyebrow="Household"
         title="Profiles"
-        description="Group devices to pause internet access or schedule an offline window — like bedtime — for everyone at once."
+        description="Group devices to pause internet access or schedule an offline window (like bedtime) for everyone at once."
         action={
           <Dialog open={createOpen} onOpenChange={setCreateOpen}>
             <DialogTrigger asChild>
@@ -218,7 +218,7 @@ function ManageProfileDialog({
         ? await api.policies.update(pausePolicy.id, { enabled: !pausePolicy.enabled })
         : await api.policies.create({ targetType: 'group', targetId: String(profile.id), type: 'pause', enabled: true });
       if (result.policy.enforcement !== 'native') {
-        toast.warning("Saved, but the router didn't confirm it — devices in this profile may still be online.");
+        toast.warning("Saved, but the router didn't confirm it; devices in this profile may still be online.");
       } else {
         toast.success(result.policy.enabled ? 'Profile paused' : 'Profile resumed');
       }
@@ -234,7 +234,7 @@ function ManageProfileDialog({
         ? await api.policies.update(schedulePolicy.id, { ...values, enabled: true })
         : await api.policies.create({ targetType: 'group', targetId: String(profile.id), type: 'schedule', enabled: true, ...values });
       if (result.policy.enforcement !== 'native') {
-        toast.warning("Schedule saved locally, but the router didn't confirm it — it may not actually enforce yet.");
+        toast.warning("Schedule saved locally, but the router didn't confirm it; it may not actually enforce yet.");
       } else {
         toast.success('Schedule saved');
       }
@@ -269,7 +269,7 @@ function ManageProfileDialog({
             <ConfirmDialog
               trigger={<Button type="button" variant="ghost" size="icon-sm" aria-label="Delete profile"><Trash2 aria-hidden="true" className="size-4" /></Button>}
               title={`Delete "${profile.name}"?`}
-              description="Devices in this profile aren't removed from the network — they just lose their profile and any policies attached to it."
+              description="Devices in this profile aren't removed from the network; they just lose their profile and any policies attached to it."
               confirmLabel="Delete"
               destructive
               onConfirm={onDelete}
@@ -281,7 +281,7 @@ function ManageProfileDialog({
           <div>
             <SectionTitle>Devices</SectionTitle>
             {devices.length === 0 ? (
-              <p className="text-sm text-muted-foreground">No devices assigned yet — assign them from a device's detail screen.</p>
+              <p className="text-sm text-muted-foreground">No devices assigned yet. Assign them from a device's detail screen.</p>
             ) : (
               <ul className="space-y-1 text-sm text-muted-foreground">
                 {devices.map((d) => (
@@ -302,7 +302,7 @@ function ManageProfileDialog({
                 {paused ? 'Resume' : 'Pause'}
               </Button>
             </div>
-            {!writable && <p className="mt-2 text-xs text-muted-foreground">Not yet available — the router hasn't confirmed it can enforce a pause for this firmware.</p>}
+            {!writable && <p className="mt-2 text-xs text-muted-foreground">Not yet available. The router hasn't confirmed it can enforce a pause for this firmware.</p>}
           </div>
 
           <form onSubmit={handleSubmit(onSaveSchedule)} className="space-y-3 rounded-2xl border p-4">
@@ -325,7 +325,7 @@ function ManageProfileDialog({
                 <Input type="time" disabled={!writable} {...register('endTime', { required: true })} />
               </div>
             </div>
-            {!writable && <p className="text-xs text-muted-foreground">Not yet available — scheduled pauses aren't confirmed to work on this router's firmware yet.</p>}
+            {!writable && <p className="text-xs text-muted-foreground">Not yet available. Scheduled pauses aren't confirmed to work on this router's firmware yet.</p>}
             <div className="flex items-center gap-2">
               <Button type="submit" size="sm" disabled={!writable}>{schedulePolicy ? 'Update schedule' : 'Create schedule'}</Button>
               {schedulePolicy && <Button type="button" variant="ghost" size="sm" onClick={removeSchedule}>Remove</Button>}

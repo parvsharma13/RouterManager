@@ -10,7 +10,7 @@ function assert(condition, message) {
 
 const storage = read('packages/frontend/src/lib/auth-storage.ts');
 // The encrypted-protocol logic lives in RouterProtocolClient.java (extracted from the
-// plugin so DeviceCheckWorker's background job can reuse it without a webview) — check
+// plugin so DeviceCheckWorker's background job can reuse it without a webview); check
 // both files so this gate tracks wherever the logic actually is, not a specific split.
 const plugin =
   read('packages/frontend/android/app/src/main/java/com/parvsharma/routermanager/RouterHttpPlugin.java') +

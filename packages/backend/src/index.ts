@@ -37,7 +37,7 @@ app.listen(env.BACKEND_PORT, () => {
   console.log(`Proxying to router at ${env.ROUTER_BASE_URL}`);
 
   // Re-assert any enabled pause/schedule policy against the router on boot, in case it was
-  // rebooted/reset since this backend last ran — see policyEngine.ts. Non-fatal: the rest
+  // rebooted/reset since this backend last ran. See policyEngine.ts. Non-fatal: the rest
   // of the app (device/group management, everything not policy-enforcement) works fine
   // even if the router is unreachable right now.
   reconcileAllPolicies(routerClient, listEnabledPolicies()).catch((err) =>

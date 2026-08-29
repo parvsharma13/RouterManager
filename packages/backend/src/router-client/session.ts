@@ -1,6 +1,6 @@
 import crypto from 'node:crypto';
 
-// See docs/api-notes.md "Login flow" — this mirrors the router's own web app exactly,
+// See docs/api-notes.md "Login flow": this mirrors the router's own web app exactly,
 // reverse-engineered from its bundled JS and confirmed live against the device.
 
 export interface RouterSession {
@@ -28,7 +28,7 @@ export function rsaEncryptPkcs1(plainUtf8: string, publicKeyPem: string): Buffer
   );
 }
 
-// Only the first 16 bytes of this 32-byte buffer are ever used as a real AES-CBC IV —
+// Only the first 16 bytes of this 32-byte buffer are ever used as a real AES-CBC IV;
 // the router's own client generates/sends the full 32 bytes regardless (see api-notes.md).
 export function randomIvFull(): Buffer {
   return crypto.randomBytes(32);

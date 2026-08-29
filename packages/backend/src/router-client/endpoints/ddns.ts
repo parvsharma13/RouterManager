@@ -1,9 +1,9 @@
 import type { DdnsConfig } from '@router-manager/shared';
 import type { RouterClient } from '../RouterClient.js';
 
-// oid=dns — DDNS is a sub-section of this OID (ddnsUsername/ddnsPassword field names seen
+// oid=dns: DDNS is a sub-section of this OID (ddnsUsername/ddnsPassword field names seen
 // referenced in the app bundle). Confirmed reachable but empty on the live device (DDNS not
-// configured) — exact nesting under Object[0] not yet confirmed against a populated entry.
+// configured); exact nesting under Object[0] not yet confirmed against a populated entry.
 interface DnsDalEntry {
   ddnsEnable?: boolean;
   ddnsProvider?: string;
@@ -33,7 +33,7 @@ export interface DdnsUpdate {
   password: string;
 }
 
-// Not yet confirmed live — verify field names against the stock GUI (Phase 4 in the plan)
+// Not yet confirmed live: verify field names against the stock GUI (Phase 4 in the plan)
 // before trusting this to actually change anything.
 export async function updateDdnsConfig(client: RouterClient, update: DdnsUpdate): Promise<void> {
   await client.daoSet(

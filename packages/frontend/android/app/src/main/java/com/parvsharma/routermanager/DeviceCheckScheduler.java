@@ -23,7 +23,7 @@ final class DeviceCheckScheduler {
       workManager.cancelUniqueWork(UNIQUE_WORK_NAME);
       return;
     }
-    // 15 minutes is WorkManager's own floor for periodic work — anything shorter is
+    // 15 minutes is WorkManager's own floor for periodic work; anything shorter is
     // silently clamped by the platform anyway, so clamp here for an honest interval.
     long minutes = Math.max(intervalMinutes, 15);
     Constraints constraints = new Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build();

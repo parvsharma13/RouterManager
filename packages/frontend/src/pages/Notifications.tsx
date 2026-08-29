@@ -29,7 +29,7 @@ export function Notifications() {
       try {
         const { granted } = await nativeAppPrefs.requestNotificationPermission();
         if (!granted) {
-          toast.error('Notifications are blocked for this app — allow them in Android settings first.');
+          toast.error('Notifications are blocked for this app. Allow them in Android settings first.');
           return;
         }
       } catch {

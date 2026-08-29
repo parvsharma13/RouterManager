@@ -14,7 +14,7 @@ import org.json.JSONObject;
  * Read-only mirror of @aparajita/capacitor-secure-storage's Android storage (see
  * node_modules/@aparajita/capacitor-secure-storage/android's SecureStorage.java) so
  * DeviceCheckWorker can read the saved router session without a running webview/JS
- * bridge — a background Worker has neither. Same app, same process UID, so the same
+ * bridge; a background Worker has neither. Same app, same process UID, so the same
  * AndroidKeyStore-backed SharedPreferences entry is readable by this class directly.
  * Writing stays exclusively the plugin's job; this class only ever decrypts.
  */

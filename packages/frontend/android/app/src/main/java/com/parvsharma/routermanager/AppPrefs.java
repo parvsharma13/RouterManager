@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 /**
  * Plain (unencrypted) native prefs for notification settings and the background device
- * checker's own bookkeeping — nothing stored here is sensitive (booleans, an interval, MAC
+ * checker's own bookkeeping: nothing stored here is sensitive (booleans, an interval, MAC
  * addresses, a reachability flag), unlike the router credentials in SecureCredentialReader.
  * Written by AppPrefsPlugin (mirroring what the JS side already persists in its own
  * encrypted SQLite store) and read by DeviceCheckWorker, which has no JS/webview to call

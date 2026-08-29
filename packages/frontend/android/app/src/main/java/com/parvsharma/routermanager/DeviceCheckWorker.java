@@ -24,14 +24,14 @@ import org.json.JSONObject;
  * turns on background checks in Settings). Logs into the router with the same encrypted
  * protocol the app uses in the foreground, then raises a plain Android notification for a
  * newly joined device or a change in router reachability. It never writes to the app's own
- * SQLite event history — the JS side re-derives those events independently the next time
+ * SQLite event history; the JS side re-derives those events independently the next time
  * it fetches /devices, so this stays a lightweight alerting job, not a second data store.
  */
 public class DeviceCheckWorker extends Worker {
   private static final String CHANNEL_ID = "router-manager-network";
   private static final int NOTIFICATION_ID_NEW_DEVICE = 1001;
   private static final int NOTIFICATION_ID_ROUTER_STATE = 1002;
-  // Require two consecutive failed logins before alerting "router unreachable" — a phone
+  // Require two consecutive failed logins before alerting "router unreachable": a phone
   // that just stepped off its home Wi-Fi will fail once almost immediately, and that alone
   // isn't a fault worth surfacing.
   private static final int OFFLINE_STREAK_THRESHOLD = 2;
@@ -49,7 +49,7 @@ public class DeviceCheckWorker extends Worker {
 
     SecureCredentialReader.Session session = SecureCredentialReader.read(context);
     if (session == null || session.serverUrl == null || session.username == null || session.password == null) {
-      return Result.success(); // signed out — nothing to check
+      return Result.success(); // signed out: nothing to check
     }
 
     boolean notifyNewDevices = prefs.getBoolean(AppPrefs.KEY_NEW_DEVICES, true);
@@ -80,7 +80,7 @@ public class DeviceCheckWorker extends Worker {
       try {
         checkForNewDevices(context, prefs, client);
       } catch (Exception ignored) {
-        // Best-effort — a parsing hiccup here shouldn't fail the whole periodic job.
+        // Best-effort: a parsing hiccup here shouldn't fail the whole periodic job.
       }
     }
     return Result.success();
@@ -139,7 +139,7 @@ public class DeviceCheckWorker extends Worker {
     try {
       NotificationManagerCompat.from(context).notify(id, builder.build());
     } catch (SecurityException ignored) {
-      // Permission was revoked between the last check and now — nothing more to do here.
+      // Permission was revoked between the last check and now: nothing more to do here.
     }
   }
 

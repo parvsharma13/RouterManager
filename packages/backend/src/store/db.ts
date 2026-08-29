@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import Database from 'better-sqlite3';
 
 // App-owned data (device nicknames/icons, groups, policies, join history) has no home on
-// the router itself — see packages/shared/src/types/app-data.ts. Same "single embedded
+// the router itself. See packages/shared/src/types/app-data.ts. Same "single embedded
 // file, gitignored" precedent as config/credentials.ts' .router-config.json.
 const backendRoot = path.resolve(fileURLToPath(import.meta.url), '../../..');
 const dataDir = path.join(backendRoot, 'data');
@@ -77,7 +77,7 @@ db.exec(`
 
 // device_events predates the `detail` column and the switch from a required mac_address
 // to an optional one (some events, like a network-wide diagnostic result, aren't tied to
-// a specific device) — add both defensively for a database file created before this change.
+// a specific device); add both defensively for a database file created before this change.
 for (const statement of [
   "ALTER TABLE device_events ADD COLUMN detail TEXT",
   "ALTER TABLE seen_devices ADD COLUMN active INTEGER NOT NULL DEFAULT 0",

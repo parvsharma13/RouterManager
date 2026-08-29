@@ -60,7 +60,7 @@ export function CompatibilityBanner() {
   return (
     <Link to="/settings/about" className={cn('flex min-h-12 items-center gap-3 border-b px-4 py-2.5 text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring md:px-6', unsupported ? 'bg-destructive/10 text-destructive' : 'bg-warning/12 text-foreground')}>
       {unsupported ? <CircleX aria-hidden="true" className="size-5 shrink-0" /> : <FlaskConical aria-hidden="true" className="size-5 shrink-0 text-warning" />}
-      <span className="flex-1">{unsupported ? 'Unsupported router — controls disabled' : 'Experimental router — read-only mode'}</span>
+      <span className="flex-1">{unsupported ? 'Unsupported router: controls disabled' : 'Experimental router: read-only mode'}</span>
       <ChevronRight aria-hidden="true" className="size-5" />
     </Link>
   );

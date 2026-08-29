@@ -31,7 +31,7 @@ export function About() {
     };
     try {
       await navigator.clipboard.writeText(JSON.stringify(report, null, 2));
-      toast.success('Diagnostic report copied — paste it into a GitHub issue.');
+      toast.success('Diagnostic report copied. Paste it into a GitHub issue.');
     } catch {
       toast.error('Could not access the clipboard.');
     }
@@ -86,7 +86,7 @@ export function About() {
                 );
               })}
             </Surface>
-            <p className="mt-3 px-1 text-xs leading-5 text-muted-foreground">Raw router object IDs behind these rows are available in the diagnostic report below — useful when reporting a bug.</p>
+            <p className="mt-3 px-1 text-xs leading-5 text-muted-foreground">Raw router object IDs behind these rows are available in the diagnostic report below, useful when reporting a bug.</p>
           </div>
 
           <Button type="button" variant="outline" onClick={copyReport} className="w-full">

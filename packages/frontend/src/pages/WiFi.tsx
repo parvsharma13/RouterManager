@@ -113,7 +113,7 @@ function WifiBandCard({ band, onSaved, writable }: { band: WlanBand; onSaved: ()
           />
           <Label htmlFor={`enabled-${band.index}`}>Network enabled</Label>
         </div>
-        {!writable && <p className="text-xs text-muted-foreground">Saving is disabled until this router model and firmware are verified — see Settings › About & compatibility.</p>}
+        {!writable && <p className="text-xs text-muted-foreground">Saving is disabled until this router model and firmware are verified. See Settings › About & compatibility.</p>}
         <div className="flex flex-wrap items-center gap-2">
           <Button type="submit" disabled={formState.isSubmitting || !writable} className="flex-1 sm:flex-none">Save</Button>
           <WifiQrDialog ssid={band.ssid} psk={band.pskDisplay} securityMode={band.securityMode} hidden={band.hidden} />

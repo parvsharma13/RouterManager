@@ -24,7 +24,7 @@ import type {
 import { Capacitor } from '@capacitor/core';
 import { directApi } from './direct-api';
 
-// The frontend only ever calls /api/* (proxied to the backend by Vite in dev) — it has
+// The frontend only ever calls /api/* (proxied to the backend by Vite in dev). It has
 // zero knowledge of the router's own address. See docs/api-notes.md and the plan's
 // "browser never talks to the router directly" boundary.
 export class ApiRequestError extends Error {

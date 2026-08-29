@@ -1,7 +1,7 @@
 import type { RouterClient } from '../RouterClient.js';
 
-// oid=paren_ctl — see docs/api-notes.md. Shape only partially confirmed live
-// (PrentalCtlEnable, MaxLenPrentalCtlPrf — note the router's own typo "Prental").
+// oid=paren_ctl: see docs/api-notes.md. Shape only partially confirmed live
+// (PrentalCtlEnable, MaxLenPrentalCtlPrf; note the router's own typo "Prental").
 // Kept as a passthrough until a real profile exists to confirm the rest of the shape.
 interface ParenCtlDal {
   Object: Array<Record<string, unknown>>;

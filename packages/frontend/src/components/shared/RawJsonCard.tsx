@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-// Used for feature areas whose write shape isn't confirmed live yet (see docs/api-notes.md) —
-// shows the real data rather than pretending we have a polished form for something unverified.
+// Used for feature areas whose write shape isn't confirmed live yet (see docs/api-notes.md).
+// Shows the real data rather than pretending we have a polished form for something unverified.
 export function RawJsonCard({ title, data }: { title: string; data: unknown }) {
   return (
     <Card>

@@ -5,15 +5,14 @@ build/
 .env.local
 .env.*.local
 
-# credential/discovery artifacts that can contain secrets — never commit these
+# credential/discovery artifacts that can contain secrets, never commit these
 packages/backend/.router-config.json
 docs/discovery-log/*.har
 docs/discovery-log/*.json
 cookies.txt
 *.har
-artifacts/*.apk
 
-# app-owned SQLite store (devices/groups/policies) — local state, not source
+# app-owned SQLite store (devices/groups/policies), local state, not source
 packages/backend/data/*.db
 packages/backend/data/*.db-*
 
@@ -21,7 +20,7 @@ packages/backend/data/*.db-*
 *.log
 npm-debug.log*
 
-# local AI-assisted workflow state — not project content
+# local AI-assisted workflow state, not project content
 .unlazy/
 .unlazy-hook-state.json
 .claude/settings.local.json

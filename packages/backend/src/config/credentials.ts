@@ -39,7 +39,7 @@ function readKeychainPassword(): string | null {
   try {
     return new Entry(KEYCHAIN_SERVICE, KEYCHAIN_ACCOUNT).getPassword();
   } catch {
-    return null; // not found, or keychain unavailable — caller falls back
+    return null; // not found, or keychain unavailable; caller falls back
   }
 }
 

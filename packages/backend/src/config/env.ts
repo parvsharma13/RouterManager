@@ -14,7 +14,7 @@ const schema = z.object({
     .default('4001')
     .transform((v) => Number(v)),
   FRONTEND_ORIGIN: z.string().default('http://localhost:5173'),
-  // Off by default — the app is on-demand, not a long-running service, and native
+  // Off by default: the app is on-demand, not a long-running service, and native
   // router-side enforcement (see policyEngine.ts) already persists policies without this.
   // Set this only if you run the backend continuously and want it to periodically re-push
   // policies (e.g. self-heal after a router reboot/reset) without restarting the backend.

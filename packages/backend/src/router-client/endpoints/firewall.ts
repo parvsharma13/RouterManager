@@ -2,7 +2,7 @@ import type { FirewallRule } from '@router-manager/shared';
 import type { RouterClient } from '../RouterClient.js';
 
 // oid=firewall_acl (rule list, empty on the live device) and oid=cyber_secure (a security
-// level/preset toggle — shape unconfirmed, see docs/api-notes.md). Kept as thin passthrough
+// level/preset toggle; shape unconfirmed, see docs/api-notes.md). Kept as thin passthrough
 // since we haven't confirmed exact field names against a populated example yet.
 interface FirewallAclDal {
   Object: Array<Record<string, unknown>>;
