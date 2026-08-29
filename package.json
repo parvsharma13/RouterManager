@@ -1,0 +1,27 @@
+{
+  "name": "router-manager",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -n backend,frontend -c blue,green \"npm run dev -w packages/backend\" \"npm run dev -w packages/frontend\"",
+    "build": "npm run build -w packages/shared && npm run build -w packages/backend && npm run build -w packages/frontend",
+    "android:debug": "npm run android:debug -w packages/frontend",
+    "android:release": "npm run android:release -w packages/frontend",
+    "verify:android": "node scripts/verify-standalone-android.mjs && node scripts/verify-android-security.mjs && node scripts/verify-direct-router-protocol.mjs && node scripts/verify-apk.mjs && node scripts/verify-open-source-readiness.mjs",
+    "lint": "npm run lint -w packages/shared && npm run lint -w packages/backend && npm run lint -w packages/frontend",
+    "setup:credentials": "npm run setup:credentials -w packages/backend",
+    "discover": "npm run discover -w packages/backend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "allowScripts": {
+    "better-sqlite3@13.0.3": true
+  }
+}
