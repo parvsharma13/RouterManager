@@ -25,7 +25,19 @@ const defaults = (): LocalData => ({
 });
 
 let connectionPromise: Promise<SQLiteDBConnection> | null = null;
-let mutationQueue: Promise<unknown> = Promise.resolve();
+
+// A single connection can only run one statement/transaction at a time; the native
+// plugin throws "Already in transaction" if two calls (e.g. a read and a write fired
+// concurrently from Promise.all in Dashboard.tsx) land on it at once. Every native DB
+// touch, read or write, goes through this one-lane queue so they're always sequential.
+// The tail is reset to a resolved promise after each job (success or failure) so one
+// failed job doesn't permanently jam every job queued after it.
+let queueTail: Promise<unknown> = Promise.resolve();
+function enqueue<T>(job: () => Promise<T>): Promise<T> {
+  const run = queueTail.then(job, job);
+  queueTail = run.then(() => undefined, () => undefined);
+  return run;
+}
 
 async function openDatabase(): Promise<SQLiteDBConnection> {
   if (connectionPromise) return connectionPromise;
@@ -68,8 +80,9 @@ function readWeb(): LocalData {
   try { return { ...defaults(), ...(JSON.parse(raw) as Partial<LocalData>) }; } catch { return defaults(); }
 }
 
-export async function readLocal(): Promise<LocalData> {
-  if (!Capacitor.isNativePlatform()) return readWeb();
+// Raw, unqueued read: only ever called from inside an enqueue()'d job (readLocal/updateLocal),
+// never directly, so it never races another native DB call.
+async function readNative(): Promise<LocalData> {
   const db = await openDatabase();
   const [overlays, seen, groups, policies, events, diagnostics, settings] = await Promise.all([
     db.query('SELECT * FROM overlays'), db.query('SELECT * FROM seen_devices'), db.query('SELECT * FROM profiles ORDER BY created_at'),
@@ -103,15 +116,33 @@ async function persist(db: SQLiteDBConnection, data: LocalData): Promise<void> {
   } catch (error) { await db.rollbackTransaction(); throw error; }
 }
 
-export async function writeLocal(data: LocalData): Promise<void> {
-  if (!Capacitor.isNativePlatform()) { localStorage.setItem(WEB_KEY, JSON.stringify(data)); return; }
-  await persist(await openDatabase(), data);
+export async function readLocal(): Promise<LocalData> {
+  if (!Capacitor.isNativePlatform()) return readWeb();
+  return enqueue(readNative);
 }
 
+export async function writeLocal(data: LocalData): Promise<void> {
+  if (!Capacitor.isNativePlatform()) { localStorage.setItem(WEB_KEY, JSON.stringify(data)); return; }
+  await enqueue(async () => { await persist(await openDatabase(), data); });
+}
+
+// Reads, mutates, and persists as a single queued job, so nothing else can read a
+// half-updated state or collide with the write. fn must synchronously derive its
+// return value from `data` (or await something that doesn't itself touch local-data,
+// since this job already holds the only queue slot).
 export async function updateLocal<T>(fn: (data: LocalData) => T | Promise<T>): Promise<T> {
-  let result!: T;
-  mutationQueue = mutationQueue.then(async () => { const data = await readLocal(); result = await fn(data); await writeLocal(data); });
-  await mutationQueue; return result;
+  if (!Capacitor.isNativePlatform()) {
+    const data = readWeb();
+    const result = await fn(data);
+    localStorage.setItem(WEB_KEY, JSON.stringify(data));
+    return result;
+  }
+  return enqueue(async () => {
+    const data = await readNative();
+    const result = await fn(data);
+    await persist(await openDatabase(), data);
+    return result;
+  });
 }
 
 export async function appendEvent(event: Omit<DeviceEvent, 'id' | 'occurredAt'> & { occurredAt?: string }): Promise<void> {
