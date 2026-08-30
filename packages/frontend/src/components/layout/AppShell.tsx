@@ -1,10 +1,12 @@
 import type { ReactNode } from 'react';
+import { useLocation } from 'react-router';
 import { Header } from './Header';
 import { Sidebar } from './Sidebar';
 import { BottomNav } from './BottomNav';
 import { CompatibilityBanner } from '@/components/shared/mobile-ui';
 
 export function AppShell({ children }: { children: ReactNode }) {
+  const location = useLocation();
   return (
     <div className="flex min-h-dvh bg-background">
       <a
@@ -18,7 +20,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <Header />
         <CompatibilityBanner />
         <main id="main-content" className="min-w-0 flex-1 pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-0">
-          <div className="mx-auto w-full max-w-5xl px-4 py-5 sm:px-6 md:py-8">{children}</div>
+          <div key={location.pathname} className="route-fade-through mx-auto w-full max-w-5xl px-4 py-5 sm:px-6 md:py-8">{children}</div>
         </main>
         <BottomNav />
       </div>

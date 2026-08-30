@@ -51,19 +51,18 @@ export function Dashboard() {
       {!data && !error && <LoadingState rows={6} />}
       {data && (
         <div className="space-y-7">
-          <Surface className="relative overflow-hidden border-primary/15 bg-[linear-gradient(145deg,var(--color-card),color-mix(in_oklab,var(--color-primary)_8%,var(--color-card)))] p-5 sm:p-6">
-            <div className="absolute -right-12 -top-16 size-44 rounded-full bg-primary/10 blur-2xl" />
-            <div className="relative flex items-start gap-4">
-              <span className="grid size-14 shrink-0 place-items-center rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/20">
+          <Surface className="m3-status-enter bg-primary-container p-5 text-primary-container-foreground sm:p-6">
+            <div className="flex items-start gap-4">
+              <span className="grid size-14 shrink-0 place-items-center rounded-[20px] bg-primary text-primary-foreground">
                 {data.dashboard.wan.connected ? <CircleCheck aria-hidden="true" className="size-7" /> : <CircleX aria-hidden="true" className="size-7" />}
               </span>
               <div className="min-w-0 flex-1">
                 <StatusPill state={data.dashboard.wan.connected ? 'success' : 'error'}>{data.dashboard.wan.connected ? 'Internet online' : 'Internet offline'}</StatusPill>
-                <h2 className="mt-3 text-2xl font-bold tracking-[-0.03em]">{data.dashboard.wan.connected ? 'Everything looks connected' : 'Your router needs attention'}</h2>
-                <p className="mt-1 text-sm text-muted-foreground">{data.dashboard.wan.connected ? `${data.devices.filter((item) => item.active).length} devices online · ${data.dashboard.wan.type || 'Hyperoptic WAN'}` : 'Run Network Check for a guided diagnosis.'}</p>
+                <h2 className="mt-3 text-2xl font-semibold tracking-[-0.02em]">{data.dashboard.wan.connected ? 'Everything looks connected' : 'Your router needs attention'}</h2>
+                <p className="mt-1 text-sm text-primary-container-foreground/80">{data.dashboard.wan.connected ? `${data.devices.filter((item) => item.active).length} devices online · ${data.dashboard.wan.type || 'Hyperoptic WAN'}` : 'Run Network Check for a guided diagnosis.'}</p>
               </div>
             </div>
-            <div className="relative mt-6 grid grid-cols-3 gap-2 border-t pt-4 text-center">
+            <div className="mt-6 grid grid-cols-3 gap-2 border-t border-primary-container-foreground/15 pt-4 text-center">
               <Metric label="Online" value={String(data.devices.filter((item) => item.active).length)} />
               <Metric label="Uptime" value={formatUptime(data.dashboard.system.upTimeSeconds)} />
               <Metric label="Profiles" value={String(data.profiles.length)} />
@@ -72,12 +71,12 @@ export function Dashboard() {
 
           <div>
             <SectionTitle>Quick actions</SectionTitle>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <Surface className="grid grid-cols-1 min-[380px]:grid-cols-2 lg:grid-cols-4">
               <QuickAction to="/devices" icon={Smartphone} label="Devices" detail="See who is online" />
               <QuickAction to="/settings/wifi" icon={Wifi} label="Wi-Fi" detail="Names and passwords" />
               <QuickAction to="/settings/profiles" icon={Users} label="Profiles" detail="Organise your home" />
               <QuickAction to="/settings/diagnostics" icon={ShieldCheck} label="Network check" detail="Test connectivity" />
-            </div>
+            </Surface>
           </div>
 
           <div className="grid gap-7 lg:grid-cols-2">
@@ -128,7 +127,7 @@ function Metric({ label, value }: { label: string; value: string }) {
 }
 
 function QuickAction({ to, icon: Icon, label, detail }: { to: string; icon: typeof Smartphone; label: string; detail: string }) {
-  return <Link to={to} className="group min-h-28 rounded-2xl border bg-card p-4 shadow-[0_1px_2px_rgb(15_23_42/0.04)] transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"><span className="grid size-10 place-items-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground"><Icon aria-hidden="true" className="size-5" /></span><p className="mt-3 text-sm font-bold">{label}</p><p className="mt-0.5 text-xs leading-4 text-muted-foreground">{detail}</p></Link>;
+  return <Link to={to} className="group flex min-h-20 items-center gap-3 border-b border-outline-variant px-4 py-3 transition-colors duration-150 hover:bg-on-surface/8 active:bg-on-surface/12 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring min-[380px]:odd:border-r min-[380px]:[&:nth-last-child(-n+2)]:border-b-0 lg:border-r lg:border-b-0 lg:last:border-r-0"><span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-secondary-container text-secondary-container-foreground"><Icon aria-hidden="true" className="size-5" /></span><span className="min-w-0"><span className="block text-sm font-semibold">{label}</span><span className="mt-0.5 block text-xs leading-4 text-on-surface-variant">{detail}</span></span></Link>;
 }
 
 function InfoRow({ icon: Icon, label, value }: { icon: typeof Router; label: string; value: string }) {

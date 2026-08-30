@@ -3,7 +3,8 @@ import { useForm, Controller } from 'react-hook-form';
 import { Pause, Play, Plus, Trash2, Users } from 'lucide-react';
 import type { DeviceGroup, ManagedDevice, Policy, DeviceIcon } from '@router-manager/shared';
 import { api, ApiRequestError } from '@/lib/api-client';
-import { deviceIconComponent, DEVICE_ICON_LABELS, DEVICE_ICONS } from '@/lib/device-icons';
+import { DEVICE_ICON_LABELS, DEVICE_ICONS } from '@/lib/device-icons';
+import { DeviceGlyph } from '@/components/shared/DeviceGlyph';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -80,7 +81,6 @@ export function Profiles() {
       {profiles && profiles.length > 0 && (
         <Surface>
           {profiles.map((profile) => {
-            const Icon = deviceIconComponent(profile.icon);
             const profilePolicies = policies.filter((p) => p.targetType === 'group' && p.targetId === String(profile.id));
             const paused = profilePolicies.some((p) => p.type === 'pause' && p.enabled);
             return (
@@ -91,7 +91,7 @@ export function Profiles() {
                 className="flex min-h-[76px] w-full items-center gap-3 border-b px-4 py-3 text-left transition-colors last:border-b-0 hover:bg-accent/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
               >
                 <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-secondary text-secondary-foreground">
-                  <Icon aria-hidden="true" className="size-5" />
+                  <DeviceGlyph icon={profile.icon} aria-hidden="true" className="size-5" />
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="block truncate font-semibold">{profile.name}</span>
@@ -309,7 +309,7 @@ function ManageProfileDialog({
             <p className="text-sm font-semibold">Scheduled offline window</p>
             <div className="flex flex-wrap gap-2">
               {DAY_LABELS.map((label, i) => (
-                <label key={i} className="flex min-h-8 items-center gap-1.5 text-sm">
+                <label key={i} className="flex min-h-12 items-center gap-2 text-sm">
                   <Checkbox checked={selectedDays.includes(i)} onCheckedChange={() => toggleDay(i)} disabled={!writable} />
                   {label}
                 </label>

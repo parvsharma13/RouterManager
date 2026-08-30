@@ -1,5 +1,7 @@
 package com.parvsharma.routermanager;
 
+import android.annotation.SuppressLint;
+import android.util.Base64;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.*;
@@ -8,7 +10,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.cert.X509Certificate;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -73,7 +76,7 @@ public class RouterProtocolClient {
     Raw response = request("/UserLogin", "POST", body.toString(), false);
     JSONObject encrypted = new JSONObject(response.body);
     if (!encrypted.has("content") || response.setCookie == null) throw new Exception("The router rejected the login.");
-    JSONObject clear = new JSONObject(decrypt(encrypted.getString("content"), aesKey, Base64.getDecoder().decode(encrypted.getString("iv"))));
+    JSONObject clear = new JSONObject(decrypt(encrypted.getString("content"), aesKey, decode64(encrypted.getString("iv"))));
     if (!"ZCFG_SUCCESS".equals(clear.optString("result"))) throw new Exception("Incorrect router username or password.");
     cookie = response.setCookie;
     csrf = clear.getString("sessionkey");
@@ -84,7 +87,7 @@ public class RouterProtocolClient {
   private String envelope(Object payload) throws Exception { byte[] iv = bytes(32); JSONObject out = new JSONObject(); out.put("content", encrypt(payload.toString(), aesKey, iv)); out.put("iv", b64(iv)); return out.toString(); }
   private Object decryptResponse(Raw response, String feature) throws Exception {
     JSONObject parsed = new JSONObject(response.body); Object value = parsed;
-    if (parsed.has("content") && parsed.has("iv")) { String clear = decrypt(parsed.getString("content"), aesKey, Base64.getDecoder().decode(parsed.getString("iv"))); value = clear.trim().startsWith("[") ? new JSONArray(clear) : new JSONObject(clear); }
+    if (parsed.has("content") && parsed.has("iv")) { String clear = decrypt(parsed.getString("content"), aesKey, decode64(parsed.getString("iv"))); value = clear.trim().startsWith("[") ? new JSONArray(clear) : new JSONObject(clear); }
     if (value instanceof JSONObject) { String result = ((JSONObject) value).optString("result"); if (!result.isEmpty() && !"ZCFG_SUCCESS".equals(result)) throw new Exception("Router feature unavailable: " + feature); }
     return value;
   }
@@ -115,10 +118,11 @@ public class RouterProtocolClient {
   }
 
   private static String encrypt(String value, byte[] key, byte[] iv) throws Exception { Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding"); c.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv, 0, 16)); return b64(c.doFinal(value.getBytes(StandardCharsets.UTF_8))); }
-  private static String decrypt(String value, byte[] key, byte[] iv) throws Exception { Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding"); c.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv, 0, 16)); return new String(c.doFinal(Base64.getDecoder().decode(value)), StandardCharsets.UTF_8); }
-  private static String rsa(String value, String pem) throws Exception { String raw = pem.replace("-----BEGIN PUBLIC KEY-----", "").replace("-----END PUBLIC KEY-----", "").replaceAll("\\s", ""); PublicKey key = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(Base64.getDecoder().decode(raw))); Cipher c = Cipher.getInstance("RSA/ECB/PKCS1Padding"); c.init(Cipher.ENCRYPT_MODE, key); return b64(c.doFinal(value.getBytes(StandardCharsets.UTF_8))); }
+  private static String decrypt(String value, byte[] key, byte[] iv) throws Exception { Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding"); c.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv, 0, 16)); return new String(c.doFinal(decode64(value)), StandardCharsets.UTF_8); }
+  private static String rsa(String value, String pem) throws Exception { String raw = pem.replace("-----BEGIN PUBLIC KEY-----", "").replace("-----END PUBLIC KEY-----", "").replaceAll("\\s", ""); PublicKey key = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(decode64(raw))); Cipher c = Cipher.getInstance("RSA/ECB/PKCS1Padding"); c.init(Cipher.ENCRYPT_MODE, key); return b64(c.doFinal(value.getBytes(StandardCharsets.UTF_8))); }
   private byte[] bytes(int n) { byte[] value = new byte[n]; random.nextBytes(value); return value; }
-  private static String b64(byte[] value) { return Base64.getEncoder().encodeToString(value); }
+  private static byte[] decode64(String value) { return Base64.decode(value, Base64.DEFAULT); }
+  private static String b64(byte[] value) { return Base64.encodeToString(value, Base64.NO_WRAP); }
   private static String read(InputStream stream) throws Exception { if (stream == null) return ""; StringBuilder out = new StringBuilder(); try (BufferedReader r = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) { String line; while ((line = r.readLine()) != null) out.append(line); } return out.toString(); }
   public static boolean isPrivateHost(String host) throws Exception { InetAddress a = InetAddress.getByName(host); byte[] b = a.getAddress(); return a.isLoopbackAddress() || a.isLinkLocalAddress() || a.isSiteLocalAddress() || (b.length == 16 && (b[0] & 0xfe) == 0xfc); }
   private static boolean isPrivate(String host) throws Exception { return isPrivateHost(host); }
@@ -126,5 +130,9 @@ public class RouterProtocolClient {
   private void clearSession() { aesKey = null; cookie = null; csrf = null; establishedAt = 0; }
 
   static class Raw { final String body, setCookie; Raw(String body, String setCookie) { this.body = body; this.setCookie = setCookie; } }
+  // Hyperhubs use a self-signed certificate. Trust is established on first use and every
+  // later request is pinned to its SHA-256 fingerprint in request(); a changed certificate
+  // is rejected before response data is accepted.
+  @SuppressLint({"CustomX509TrustManager", "TrustAllX509TrustManager"})
   private static class LocalTrust implements X509TrustManager { public void checkClientTrusted(X509Certificate[] c, String a) {} public void checkServerTrusted(X509Certificate[] c, String a) {} public X509Certificate[] getAcceptedIssuers() { return new X509Certificate[0]; } }
 }

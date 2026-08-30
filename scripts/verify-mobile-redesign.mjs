@@ -69,7 +69,7 @@ assert(appShell.includes('id="main-content"'), 'AppShell must expose the #main-c
 const button = read('packages/frontend/src/components/ui/button.tsx');
 assert(/default:\s*"h-12/.test(button), 'default Button size must meet the 48dp touch-target floor (h-12)');
 const input = read('packages/frontend/src/components/ui/input.tsx');
-assert(/^\s*"h-12/m.test(input) || input.includes('"h-12 w-full'), 'Input must meet the 48dp touch-target floor (h-12)');
+assert(/"(?:h-1[2-9]|min-h-1[2-9])\b/.test(input), 'Input must meet or exceed the 48dp touch-target floor');
 
 // --- 5. Every settings-nested write surface explains itself when read-only, per DESIGN.md ---
 for (const file of ['packages/frontend/src/pages/WiFi.tsx', 'packages/frontend/src/pages/Profiles.tsx', 'packages/frontend/src/pages/PortForwarding.tsx']) {

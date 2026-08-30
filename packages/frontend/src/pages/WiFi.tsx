@@ -97,7 +97,7 @@ function WifiBandCard({ band, onSaved, writable }: { band: WlanBand; onSaved: ()
               type="button"
               onClick={() => setShowPsk((v) => !v)}
               aria-label={showPsk ? 'Hide password' : 'Show password'}
-              className="absolute right-1 top-1/2 grid size-10 -translate-y-1/2 place-items-center text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="absolute right-0 top-1/2 grid size-12 -translate-y-1/2 place-items-center rounded-full text-on-surface-variant transition-colors hover:bg-on-surface/8 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               {showPsk ? <EyeOff aria-hidden="true" className="size-4" /> : <Eye aria-hidden="true" className="size-4" />}
             </button>

@@ -3,7 +3,7 @@ import { Cable, ChevronRight, Search, Signal, Smartphone, Sparkles, UserRound, W
 import { Link } from 'react-router';
 import type { DeviceGroup, ManagedDevice } from '@router-manager/shared';
 import { api, ApiRequestError } from '@/lib/api-client';
-import { deviceIconComponent } from '@/lib/device-icons';
+import { DeviceGlyph } from '@/components/shared/DeviceGlyph';
 import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
 import { LoadingState } from '@/components/shared/LoadingState';
@@ -54,11 +54,11 @@ export function Devices() {
       <div className="mb-4 space-y-3">
         <div className="relative">
           <Search aria-hidden="true" className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
-          <Input aria-label="Search devices" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search name, IP or MAC" className="h-12 rounded-xl bg-card pl-12" />
+          <Input aria-label="Search devices" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search name, IP or MAC" className="pl-12" />
         </div>
         <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:px-0" aria-label="Device filters">
-          {filters.map((item) => <button key={item.key} type="button" aria-pressed={filter === item.key} onClick={() => setFilter(item.key)} className={cn('min-h-12 shrink-0 rounded-full border px-4 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring', filter === item.key ? 'border-primary bg-primary text-primary-foreground' : 'bg-card text-muted-foreground hover:text-foreground')}>{item.label}</button>)}
-          {groups.length > 0 && <select aria-label="Filter by profile" value={profile} onChange={(event) => setProfile(event.target.value === 'all' ? 'all' : Number(event.target.value))} className="min-h-12 shrink-0 rounded-full border bg-card px-4 text-sm font-semibold text-muted-foreground outline-none focus:ring-2 focus:ring-ring"><option value="all">All profiles</option>{groups.map((group) => <option key={group.id} value={group.id}>{group.name}</option>)}</select>}
+          {filters.map((item) => <button key={item.key} type="button" aria-pressed={filter === item.key} onClick={() => setFilter(item.key)} className={cn('m3-nav-destination min-h-12 shrink-0 rounded-xl border border-outline-variant px-4 text-sm font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring', filter === item.key ? 'border-secondary-container bg-secondary-container text-secondary-container-foreground' : 'bg-transparent text-on-surface-variant hover:bg-on-surface/8 hover:text-foreground')}>{item.label}</button>)}
+          {groups.length > 0 && <select aria-label="Filter by profile" value={profile} onChange={(event) => setProfile(event.target.value === 'all' ? 'all' : Number(event.target.value))} className="min-h-12 shrink-0 rounded-xl border border-outline-variant bg-transparent px-4 text-sm font-semibold text-on-surface-variant outline-none focus:ring-2 focus:ring-ring"><option value="all">All profiles</option>{groups.map((group) => <option key={group.id} value={group.id}>{group.name}</option>)}</select>}
         </div>
       </div>
 
@@ -76,13 +76,12 @@ export function Devices() {
 }
 
 function DeviceRow({ device, profileName }: { device: ManagedDevice; profileName?: string }) {
-  const Icon = deviceIconComponent(device.icon);
   const connection = `${device.connectionType || device.interfaceType}`.toLowerCase();
   const ConnectionIcon = connection.includes('ethernet') ? Cable : Wifi;
   return (
-    <Link to={`/devices/${encodeURIComponent(device.macAddress)}`} className="flex min-h-[76px] items-center gap-3 border-b px-4 py-3 transition-colors last:border-0 hover:bg-accent/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring">
-      <span className="relative grid size-12 shrink-0 place-items-center rounded-2xl bg-secondary text-secondary-foreground">
-        <Icon aria-hidden="true" className="size-5" />
+    <Link to={`/devices/${encodeURIComponent(device.macAddress)}`} className="flex min-h-[76px] items-center gap-3 border-b border-outline-variant px-4 py-3 transition-colors duration-150 last:border-0 hover:bg-on-surface/8 active:bg-on-surface/12 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring">
+      <span className="relative grid size-12 shrink-0 place-items-center rounded-2xl bg-secondary-container text-secondary-container-foreground">
+        <DeviceGlyph icon={device.icon} aria-hidden="true" className="size-5" />
         <span className={cn('absolute bottom-0 right-0 size-3 rounded-full border-2 border-card', device.active ? 'bg-success' : 'bg-muted-foreground/45')} />
       </span>
       <span className="min-w-0 flex-1">

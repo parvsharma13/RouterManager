@@ -5,9 +5,9 @@ import { NAV_ITEMS } from '@/lib/nav-items';
 
 export function Sidebar() {
   return (
-    <aside className="sticky top-0 hidden h-dvh w-24 shrink-0 flex-col border-r bg-card px-2 py-5 md:flex lg:w-64 lg:px-4">
+    <aside className="sticky top-0 hidden h-dvh w-24 shrink-0 flex-col bg-surface-container px-2 py-5 md:flex lg:w-64 lg:px-4">
       <div className="mb-8 flex h-12 items-center justify-center gap-3 lg:justify-start lg:px-2">
-        <span className="grid size-10 shrink-0 place-items-center rounded-[14px] bg-primary text-primary-foreground shadow-sm shadow-primary/20">
+        <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-primary text-primary-foreground">
           <Router aria-hidden="true" className="size-5" />
         </span>
         <div className="hidden min-w-0 lg:block">
@@ -23,8 +23,8 @@ export function Sidebar() {
             end={end}
             className={({ isActive }) =>
               cn(
-                'flex min-h-12 items-center justify-center gap-3 rounded-xl px-3 text-sm font-semibold transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring lg:justify-start',
-                isActive ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-accent hover:text-foreground'
+                'm3-nav-destination flex min-h-14 items-center justify-center gap-3 rounded-full px-3 text-sm font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring lg:justify-start',
+                isActive ? 'bg-secondary-container text-secondary-container-foreground' : 'text-muted-foreground hover:bg-on-surface/8 hover:text-foreground'
               )
             }
           >

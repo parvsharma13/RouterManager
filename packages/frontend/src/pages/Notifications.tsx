@@ -92,9 +92,9 @@ export function Notifications() {
                 onChange={(value) => save({ backgroundChecks: value })}
               />
               {prefs.backgroundChecks && (
-                <div className="flex min-h-16 items-center gap-3 px-4 py-3">
+                <div className="flex min-h-[72px] items-center gap-3 px-4 py-3">
                   <span className="min-w-0 flex-1 text-sm font-semibold">Check every</span>
-                  <div role="radiogroup" aria-label="Check interval" className="flex gap-1 rounded-full border p-1">
+                  <div role="radiogroup" aria-label="Check interval" className="flex gap-1 rounded-full bg-surface-container-high p-1">
                     {INTERVALS.map((minutes) => (
                       <button
                         key={minutes}
@@ -102,7 +102,7 @@ export function Notifications() {
                         role="radio"
                         aria-checked={prefs.intervalMinutes === minutes}
                         onClick={() => save({ intervalMinutes: minutes })}
-                        className={`min-h-8 rounded-full px-3 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${prefs.intervalMinutes === minutes ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                        className={`min-h-12 rounded-full px-3 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${prefs.intervalMinutes === minutes ? 'bg-secondary-container text-secondary-container-foreground' : 'text-on-surface-variant hover:bg-on-surface/8 hover:text-foreground'}`}
                       >
                         {minutes}m
                       </button>
@@ -124,7 +124,7 @@ export function Notifications() {
 function ToggleRow({ title, detail, checked, onChange }: { title: string; detail: string; checked: boolean; onChange: (value: boolean) => void }) {
   const id = `toggle-${title.replace(/\s+/g, '-').toLowerCase()}`;
   return (
-    <div className="flex min-h-16 items-center gap-3 border-b px-4 py-3 last:border-b-0">
+    <div className="flex min-h-[72px] items-center gap-3 border-b border-outline-variant px-4 py-3 last:border-b-0">
       <span className="min-w-0 flex-1">
         <Label htmlFor={id} className="text-[0.9375rem] font-semibold">{title}</Label>
         <span className="mt-0.5 block text-xs leading-5 text-muted-foreground">{detail}</span>

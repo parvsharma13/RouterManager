@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 import { Cable, ChevronLeft, Clock3, Fingerprint, MapPin, Signal, Wifi } from 'lucide-react';
 import { useForm, Controller } from 'react-hook-form';
 import type { DeviceGroup, DeviceIcon, ManagedDevice } from '@router-manager/shared';
 import { api, ApiRequestError } from '@/lib/api-client';
-import { deviceIconComponent, DEVICE_ICON_LABELS, DEVICE_ICONS } from '@/lib/device-icons';
+import { DEVICE_ICON_LABELS, DEVICE_ICONS } from '@/lib/device-icons';
+import { DeviceGlyph } from '@/components/shared/DeviceGlyph';
 import { ErrorState } from '@/components/shared/ErrorState';
 import { LoadingState } from '@/components/shared/LoadingState';
 import { PageHeader, SectionTitle, SettingsRow, StatusPill, Surface } from '@/components/shared/mobile-ui';
@@ -35,7 +36,7 @@ export function DeviceDetail() {
   const [error, setError] = useState<string | null>(null);
   const { register, handleSubmit, control, reset, formState } = useForm<DeviceForm>();
 
-  const load = () => {
+  const load = useCallback(() => {
     setError(null);
     Promise.all([api.devices.list(), api.groups.list()])
       .then(([deviceResult, groupResult]) => {
@@ -52,9 +53,9 @@ export function DeviceDetail() {
         }
       })
       .catch((caught) => setError(caught instanceof ApiRequestError ? caught.message : 'Could not load this device.'));
-  };
+  }, [mac, reset]);
 
-  useEffect(load, [mac]);
+  useEffect(() => { load(); }, [load]);
 
   const onSubmit = async (values: DeviceForm) => {
     try {
@@ -133,14 +134,11 @@ export function DeviceDetail() {
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                              {DEVICE_ICONS.map((icon) => {
-                                const Icon = deviceIconComponent(icon);
-                                return (
-                                  <SelectItem key={icon} value={icon}>
-                                    <Icon aria-hidden="true" className="size-4" /> {DEVICE_ICON_LABELS[icon]}
-                                  </SelectItem>
-                                );
-                              })}
+                              {DEVICE_ICONS.map((icon) => (
+                                <SelectItem key={icon} value={icon}>
+                                  <DeviceGlyph icon={icon} aria-hidden="true" className="size-4" /> {DEVICE_ICON_LABELS[icon]}
+                                </SelectItem>
+                              ))}
                             </SelectContent>
                           </Select>
                         )}

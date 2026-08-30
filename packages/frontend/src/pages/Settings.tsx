@@ -54,12 +54,12 @@ export function Settings() {
           <SectionTitle>App</SectionTitle>
           <Surface>
             <SettingsRow icon={Bell} title="Notifications" detail="New devices, router offline alerts" to="/settings/notifications" />
-            <div className="flex min-h-16 items-center gap-3 px-4 py-3">
-              <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-secondary text-secondary-foreground">
+            <div className="flex min-h-[72px] items-center gap-3 px-4 py-3">
+              <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-secondary-container text-secondary-container-foreground">
                 <Cog aria-hidden="true" className="size-5" />
               </span>
               <span className="min-w-0 flex-1 text-[0.9375rem] font-semibold">Appearance</span>
-              <div role="radiogroup" aria-label="Theme" className="flex gap-1 rounded-full border p-1">
+              <div role="radiogroup" aria-label="Theme" className="flex gap-1 rounded-full bg-surface-container-high p-1">
                 {THEME_OPTIONS.map((option) => (
                   <button
                     key={option}
@@ -68,8 +68,8 @@ export function Settings() {
                     aria-checked={theme === option}
                     onClick={() => setTheme(option)}
                     className={cn(
-                      'min-h-8 rounded-full px-3 text-xs font-semibold capitalize transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-                      theme === option ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
+                      'min-h-12 rounded-full px-3 text-xs font-semibold capitalize transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                      theme === option ? 'bg-secondary-container text-secondary-container-foreground' : 'text-on-surface-variant hover:bg-on-surface/8 hover:text-foreground'
                     )}
                   >
                     {option}
@@ -83,7 +83,7 @@ export function Settings() {
         <button
           type="button"
           onClick={() => void logout()}
-          className="flex min-h-14 w-full items-center justify-center rounded-2xl border text-sm font-semibold text-destructive transition-colors hover:bg-destructive/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="flex min-h-14 w-full items-center justify-center rounded-full border border-outline-variant text-sm font-semibold text-destructive transition-colors hover:bg-destructive/8 active:bg-destructive/12 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           Sign out
         </button>

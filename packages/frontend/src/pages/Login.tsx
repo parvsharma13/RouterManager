@@ -38,10 +38,10 @@ export function Login() {
   };
 
   return (
-    <main className="min-h-dvh bg-[radial-gradient(circle_at_top,var(--color-accent),transparent_42%)] px-4 py-[max(2rem,env(safe-area-inset-top))] sm:grid sm:place-items-center">
+    <main className="min-h-dvh bg-surface px-4 py-[max(2rem,env(safe-area-inset-top))] sm:grid sm:place-items-center">
       <div className="mx-auto w-full max-w-md space-y-6">
         <div className="flex items-center justify-center gap-3">
-          <span className="grid size-12 place-items-center rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/20">
+          <span className="m3-status-enter grid size-14 place-items-center rounded-[20px] bg-primary-container text-primary-container-foreground">
             <Router aria-hidden="true" className="size-6" />
           </span>
           <div>
@@ -50,7 +50,7 @@ export function Login() {
           </div>
         </div>
 
-        <Card className="shadow-xl shadow-foreground/5">
+        <Card className="bg-surface-container-low p-1">
           <CardHeader>
             <h1 className="flex items-center gap-2 text-xl font-semibold leading-none">
               <LockKeyhole aria-hidden="true" className="size-5 text-primary" />
@@ -61,7 +61,7 @@ export function Login() {
           <CardContent>
             <form className="space-y-5" onSubmit={submit} noValidate>
               {error ? (
-                <div ref={errorRef} role="alert" tabIndex={-1} className="rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive outline-none focus:ring-2 focus:ring-ring">
+                <div ref={errorRef} role="alert" tabIndex={-1} className="rounded-2xl bg-destructive/12 p-4 text-sm text-destructive outline-none focus:ring-2 focus:ring-ring">
                   {error}
                 </div>
               ) : null}
@@ -81,7 +81,7 @@ export function Login() {
                 <Label htmlFor="password">Password</Label>
                 <div className="relative">
                   <Input id="password" name="password" type={showPassword ? 'text' : 'password'} autoComplete="current-password" value={password} onChange={(event) => setPassword(event.target.value)} disabled={submitting} className="h-12 pr-12" required />
-                  <button type="button" aria-label={showPassword ? 'Hide password' : 'Show password'} aria-pressed={showPassword} onClick={() => setShowPassword((current) => !current)} className="absolute inset-y-0 right-0 grid w-12 place-items-center rounded-r-md text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                  <button type="button" aria-label={showPassword ? 'Hide password' : 'Show password'} aria-pressed={showPassword} onClick={() => setShowPassword((current) => !current)} className="absolute inset-y-0 right-0 grid w-14 place-items-center rounded-r-xl text-on-surface-variant transition-colors hover:bg-on-surface/8 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
                     {showPassword ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}
                   </button>
                 </div>

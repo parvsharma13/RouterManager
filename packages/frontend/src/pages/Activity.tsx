@@ -82,14 +82,14 @@ export function Activity() {
         <div className="space-y-6">
           {groups.map((group) => (
             <div key={group.day}>
-              <h2 className="mb-2 px-1 text-sm font-bold uppercase tracking-[0.08em] text-muted-foreground">{group.day}</h2>
+              <h2 className="mb-2 min-h-10 px-1 pt-2 text-sm font-semibold text-on-surface-variant">{group.day}</h2>
               <Surface>
                 {group.items.map((event) => {
                   const meta = EVENT_META[event.eventType] ?? { icon: ActivityIcon, label: event.eventType.replaceAll('_', ' ') };
                   const Icon = meta.icon;
                   return (
-                    <div key={event.id} className="flex min-h-16 items-start gap-3 border-b px-4 py-3 last:border-b-0">
-                      <span className="mt-0.5 grid size-10 shrink-0 place-items-center rounded-xl bg-secondary text-secondary-foreground">
+                    <div key={event.id} className="flex min-h-[72px] items-start gap-3 border-b border-outline-variant px-4 py-3 last:border-b-0">
+                      <span className="mt-0.5 grid size-10 shrink-0 place-items-center rounded-xl bg-secondary-container text-secondary-container-foreground">
                         <Icon aria-hidden="true" className="size-5" />
                       </span>
                       <span className="min-w-0 flex-1">
