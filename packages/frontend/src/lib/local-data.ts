@@ -84,11 +84,16 @@ function readWeb(): LocalData {
 // never directly, so it never races another native DB call.
 async function readNative(): Promise<LocalData> {
   const db = await openDatabase();
-  const [overlays, seen, groups, policies, events, diagnostics, settings] = await Promise.all([
-    db.query('SELECT * FROM overlays'), db.query('SELECT * FROM seen_devices'), db.query('SELECT * FROM profiles ORDER BY created_at'),
-    db.query('SELECT payload FROM policies ORDER BY id'), db.query('SELECT * FROM events ORDER BY occurred_at DESC LIMIT 500'),
-    db.query('SELECT payload FROM diagnostics ORDER BY checked_at DESC LIMIT 50'), db.query("SELECT key,value FROM settings WHERE key IN ('notifications','next_id')"),
-  ]);
+  // Keep individual bridge calls sequential too. The outer queue prevents separate local
+  // data jobs from overlapping; these awaits prevent one read job from dispatching seven
+  // simultaneous native calls against the same connection.
+  const overlays = await db.query('SELECT * FROM overlays');
+  const seen = await db.query('SELECT * FROM seen_devices');
+  const groups = await db.query('SELECT * FROM profiles ORDER BY created_at');
+  const policies = await db.query('SELECT payload FROM policies ORDER BY id');
+  const events = await db.query('SELECT * FROM events ORDER BY occurred_at DESC LIMIT 500');
+  const diagnostics = await db.query('SELECT payload FROM diagnostics ORDER BY checked_at DESC LIMIT 50');
+  const settings = await db.query("SELECT key,value FROM settings WHERE key IN ('notifications','next_id')");
   const data = defaults();
   for (const row of overlays.values ?? []) data.overlays[row.mac] = { macAddress: row.mac, customName: row.custom_name, icon: row.icon, notes: row.notes, groupId: row.group_id };
   for (const row of seen.values ?? []) data.seen[row.mac] = { firstSeenAt: row.first_seen, lastSeenAt: row.last_seen, name: row.name, active: Boolean(row.active) };
@@ -103,7 +108,10 @@ async function readNative(): Promise<LocalData> {
 async function persist(db: SQLiteDBConnection, data: LocalData): Promise<void> {
   await db.beginTransaction();
   try {
-    await db.execute('DELETE FROM overlays; DELETE FROM seen_devices; DELETE FROM profiles; DELETE FROM policies; DELETE FROM events; DELETE FROM diagnostics;');
+    // execute() starts its own transaction by default. This write is already inside the
+    // explicit transaction above, so transaction=false is required to avoid a nested
+    // beginTransaction call and the plugin's "Already in transaction" exception.
+    await db.execute('DELETE FROM overlays; DELETE FROM seen_devices; DELETE FROM profiles; DELETE FROM policies; DELETE FROM events; DELETE FROM diagnostics;', false);
     for (const item of Object.values(data.overlays)) await db.run('INSERT INTO overlays(mac,custom_name,icon,notes,group_id) VALUES(?,?,?,?,?)', [item.macAddress, item.customName, item.icon, item.notes, item.groupId]);
     for (const [mac, item] of Object.entries(data.seen)) await db.run('INSERT INTO seen_devices(mac,first_seen,last_seen,name,active) VALUES(?,?,?,?,?)', [mac, item.firstSeenAt, item.lastSeenAt, item.name, item.active ? 1 : 0]);
     for (const item of data.groups) await db.run('INSERT INTO profiles(id,name,icon,device_count,created_at,updated_at) VALUES(?,?,?,?,?,?)', [item.id, item.name, item.icon, item.deviceCount, item.createdAt, item.updatedAt]);

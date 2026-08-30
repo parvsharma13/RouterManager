@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import { spawnSync } from 'node:child_process';
 
-const apk = 'RouterManager-v1.1.1.apk';
+const apk = 'RouterManager-v1.1.2.apk';
 const sdk = process.env.ANDROID_HOME || '/opt/homebrew/share/android-commandlinetools';
 const buildTools = `${sdk}/build-tools/36.0.0`;
 const javaHome = process.env.JAVA_HOME || '/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home';
@@ -26,8 +26,8 @@ if (!signature.includes('Signer #1 key size (bits): 3072')) throw new Error('Exp
 const badging = run(`${buildTools}/aapt`, ['dump', 'badging', apk]);
 if (!badging.includes("name='com.parvsharma.routermanager'")) throw new Error('Unexpected application id');
 if (!badging.includes("application-label:'Router Manager'")) throw new Error('Unexpected application label');
-if (!badging.includes("versionCode='3'")) throw new Error('Expected Android version code 3');
-if (!badging.includes("versionName='1.1.1'")) throw new Error('Expected Android version name 1.1.1');
+if (!badging.includes("versionCode='4'")) throw new Error('Expected Android version code 4');
+if (!badging.includes("versionName='1.1.2'")) throw new Error('Expected Android version name 1.1.2');
 if (!badging.includes("targetSdkVersion:'36'")) throw new Error('Unexpected Android target SDK');
 if (!badging.includes("uses-permission: name='android.permission.INTERNET'")) throw new Error('Missing internet permission');
 

@@ -7,9 +7,9 @@
 
 Router Manager is an unofficial, open-source Android companion for Hyperoptic Internet customers using compatible Hyperhub routers. It is not affiliated with or endorsed by Hyperoptic, Zyxel, Amazon, or eero.
 
-**[Download Router Manager v1.1.1](https://github.com/parvsharma13/RouterManager/raw/main/RouterManager-v1.1.1.apk)**
+**[Download Router Manager v1.1.2](https://github.com/parvsharma13/RouterManager/raw/main/RouterManager-v1.1.2.apk)**
 
-Version 1.1.1 includes the refreshed Material Design interface and fixes full-object reads on Hyperoptic firmware that previously displayed `Missing Arguement` immediately after login.
+Version 1.1.2 includes the refreshed Material Design interface, Hyperoptic firmware compatibility fixes, and correct single-transaction local database writes.
 
 It replaces the stock Zyxel admin GUI with a mobile-first, four-tab app (Home, Devices, Activity, Settings) that adds what the router itself doesn't provide: per-device nicknames and icons, household Profiles for pausing or scheduling internet access, Wi-Fi QR sharing, new-device alerts, and network diagnostics. Everything runs locally, with no account, no cloud relay, and no telemetry.
 
@@ -65,7 +65,7 @@ Explicitly out of scope: cloud accounts, remote relay servers, subscriptions, te
 
 The Android app is standalone. It talks directly to your Zyxel router over your home Wi-Fi using the router's encrypted RSA/AES login and DAL protocol. Your computer, a backend server, and internet access are not required after installation.
 
-1. Download [`RouterManager-v1.1.1.apk`](https://github.com/parvsharma13/RouterManager/raw/main/RouterManager-v1.1.1.apk) directly to your Android phone (or copy it over from your computer).
+1. Download [`RouterManager-v1.1.2.apk`](https://github.com/parvsharma13/RouterManager/raw/main/RouterManager-v1.1.2.apk) directly to your Android phone (or copy it over from your computer).
 2. Open it and allow installation from that file-manager app when prompted.
 3. Connect the phone to your router's Wi-Fi.
 4. Enter the router address (normally `https://192.168.1.1`) and the router admin username and password.

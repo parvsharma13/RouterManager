@@ -29,6 +29,9 @@ assert(queueMatch, 'local-data.ts must define a queueTail/enqueue serialization 
 assert(/return enqueue\(readNative\)/.test(localDataSource), 'readLocal() must go through the same queue as writes, not call the native DB directly');
 assert(/enqueue\(async \(\) => \{ await persist/.test(localDataSource), 'writeLocal() must go through the queue');
 assert(/return enqueue\(async \(\) => \{[\s\S]{0,80}const data = await readNative/.test(localDataSource), 'updateLocal() must read+mutate+persist inside a single queued job');
+assert(/db\.execute\([\s\S]*?DELETE FROM overlays[\s\S]*?,\s*false\)/.test(localDataSource), 'persist() must disable execute()\'s implicit transaction while inside an explicit transaction');
+const readNativeBody = localDataSource.match(/async function readNative\(\)[\s\S]*?\n}\n\nasync function persist/)?.[0] ?? '';
+assert(!readNativeBody.includes('Promise.all'), 'readNative() must not dispatch concurrent calls on one SQLite connection');
 
 // Run the extracted queueTail/enqueue block for real, under tsx (it's still TypeScript,
 // e.g. `Promise<unknown>` annotations), against a battery of concurrent jobs.
