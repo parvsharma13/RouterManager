@@ -18,7 +18,7 @@ run('npm', ['run', 'android:release'], 'Build signed release APK');
 
 // 2. Publish it to the path the README tells users to install from.
 const builtApk = 'packages/frontend/android/app/build/outputs/apk/release/app-release.apk';
-const publishedApk = 'RouterManager-v1.1.apk';
+const publishedApk = 'RouterManager-v1.1.1.apk';
 if (!fs.existsSync(builtApk)) throw new Error(`Expected release APK at ${builtApk} after a successful build`);
 fs.mkdirSync(path.dirname(publishedApk), { recursive: true });
 fs.copyFileSync(builtApk, publishedApk);

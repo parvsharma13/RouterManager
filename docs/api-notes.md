@@ -42,7 +42,9 @@ Session lifetime: not yet measured precisely; treat as short (Zyxel OPAL-trunk d
 
 ## Reading config: `/cgi-bin/DAL`
 
-**`GET /cgi-bin/DAL?DalGetOneObject=y&oid=<name>`**, headers `Cookie: <session cookie>`, `CSRFToken: <sessionkey>`.
+**`GET /cgi-bin/DAL?oid=<name>`**, headers `Cookie: <session cookie>`, `CSRFToken: <sessionkey>`.
+
+This form returns every instance exposed by the OID and is what the stock web interface uses for `status`, `wlan`, `lanhosts`, and other list reads. Do not add `DalGetOneObject=y` unless the request also includes the specific instance selector object expected by that firmware. Hyperoptic firmware `V5.50(ABVY.4)C0` returns its misspelled `Missing Arguement` error when that flag is sent without a selector.
 
 Response is always `{ "content": "...", "iv": "..." }`, AES-decrypt with the session's `aesKey` and the response's own `iv` (first 16 bytes) to get the real payload:
 ```json
@@ -89,7 +91,7 @@ Seen as plain strings in app.js, separate from the DAL system: `CardInfo`, `Chec
 
 ## Quirks / gotchas
 
-- **GET requests are not request-body-encrypted** (query string only: `DalGetOneObject=y&oid=...`), but **responses always are**, whenever the URL is `/UserLogin` or contains `/cgi-bin/`. Don't assume an unencrypted response shape for GETs.
+- **GET requests are not request-body-encrypted** (query string only: `oid=...` for a full-OID read), but **responses always are**, whenever the URL is `/UserLogin` or contains `/cgi-bin/`. Don't assume an unencrypted response shape for GETs.
 - The 32-byte `iv` field sent/received is **not** used whole; only its first 16 bytes are the real AES-CBC IV. Send the full 32 bytes (matching what the server expects to receive), but only use the first 16 for your own AES calls.
 - RSA-encrypt the AES key's **base64 string representation**, not its raw bytes.
 - Session cookie name is `Session`, not `Authentication` (the latter is dead code from an older shared helper file, `zyxel.js`, that doesn't match this firmware's actual behavior; a reminder that static analysis alone isn't enough; always confirm live).
@@ -97,5 +99,6 @@ Seen as plain strings in app.js, separate from the DAL system: `CardInfo`, `Chec
 
 ## Changelog
 
+- **2026-08-30**: Corrected full-OID reads for Hyperoptic firmware `V5.50(ABVY.4)C0`. The firmware's own web UI calls `/cgi-bin/DAL?oid=<name>` and reserves `DalGetOneObject=y` for requests that also provide an instance selector. Sending the flag without that selector caused the Android app's first post-login reads to fail with `Missing Arguement`.
 - **2026-08-25**: Initial discovery. Full login/session/DAL-GET pipeline implemented and confirmed working end-to-end against the live device (`status`, `wlan`, `lanhosts` fully read; every OID in the catalogue above probed reachable). Write shapes not yet confirmed for any OID; confirm per-feature at implementation time.
 - **2026-08-25**: Added app-owned device management (nicknames/icons/groups, local SQLite, not a router feature at all) and pause/schedule policies. Policies attempt native enforcement via `wlan_sch_access` (see the `paren_ctl` row above); this is the first write in the app attempted *without* first decompiling the app.js bundle to confirm the GET shape (only a live probe against the real device). **Tested both PUT and POST live against a dummy MAC**: both returned `ZCFG_SUCCESS` but neither actually created an entry (`GET` immediately after still showed `Object: []`), so the write shape is confirmed *wrong* (or incomplete), not just unconfirmed. `pushNativeSchedule` (`accessControl.ts`) now verifies by re-reading after every write rather than trusting `ZCFG_SUCCESS` alone, and reports `enforcement: 'unenforced'` when the entry doesn't actually appear; this matters, keep it even after the payload gets corrected. Next step: try the `Type`/`Id` `ReplyMsg` hints as extra fields, or decompile the app bundle properly. `wan` OID wired up for `DashboardResponse.wan` (was declared in the type but never populated): confirmed live: `{connected: true, type: "ETH", ipAddress: "100.70.170.143"}` against the real device. `connected` is inferred from `IPAddress` presence, not a field the router sends directly. Also confirmed live end-to-end against the real router: `/api/dashboard`, `/api/devices` (merged overlay + new-device detection), `/api/groups` (create/list/delete), `PATCH /api/devices/:mac` (nickname/icon/group assignment), `/api/devices/events`, `/api/speedtest` (323.8 Mbps down / 142.6 Mbps up / 101ms against Cloudflare).

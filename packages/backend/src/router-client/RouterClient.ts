@@ -154,11 +154,13 @@ export class RouterClient {
     return this.session;
   }
 
-  /** GET /cgi-bin/DAL?oid=<oid> (see docs/api-notes.md) */
+  /** GET every instance exposed by an OID (see docs/api-notes.md). */
   async daoGet<T = unknown>(oid: string): Promise<T> {
     return this.withRetry(async () => {
       const session = await this.ensureSession();
-      const res = await this.rawRequest(`/cgi-bin/DAL?DalGetOneObject=y&oid=${encodeURIComponent(oid)}`, {
+      // Do not add DalGetOneObject here. Current Hyperoptic firmware treats that as a
+      // one-instance request and returns "Missing Arguement" unless a selector is present.
+      const res = await this.rawRequest(`/cgi-bin/DAL?oid=${encodeURIComponent(oid)}`, {
         headers: { Cookie: session.cookie, CSRFToken: session.csrfToken },
       });
       return this.decryptDalResponse<T>(res, session, oid);

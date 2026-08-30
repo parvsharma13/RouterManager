@@ -5,8 +5,11 @@ import fs from 'node:fs';
 const source =
   fs.readFileSync('packages/frontend/android/app/src/main/java/com/parvsharma/routermanager/RouterHttpPlugin.java','utf8') +
   fs.readFileSync('packages/frontend/android/app/src/main/java/com/parvsharma/routermanager/RouterProtocolClient.java','utf8');
-for (const marker of ['/getRSAPublickKey','/UserLogin','DalGetOneObject=y&oid=','CSRFToken','AES/CBC/PKCS5Padding','RSA/ECB/PKCS1Padding']) {
+for (const marker of ['/getRSAPublickKey','/UserLogin','/cgi-bin/DAL?oid=','CSRFToken','AES/CBC/PKCS5Padding','RSA/ECB/PKCS1Padding']) {
   if (!source.includes(marker)) throw new Error(`Missing protocol marker: ${marker}`);
+}
+if (source.includes('DalGetOneObject=y&oid=')) {
+  throw new Error('Full-OID reads must not use DalGetOneObject without an instance selector');
 }
 const key=Buffer.alloc(32,7),iv=Buffer.alloc(32,9),clear='{"protocol":"zyxel-dal"}';
 const cipher=crypto.createCipheriv('aes-256-cbc',key,iv.subarray(0,16));

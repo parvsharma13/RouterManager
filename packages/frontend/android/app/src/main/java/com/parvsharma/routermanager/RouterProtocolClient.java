@@ -43,7 +43,11 @@ public class RouterProtocolClient {
   public void login() throws Exception { doLogin(); }
   public Object daoGet(String oid) throws Exception {
     ensureSession();
-    String path = "/cgi-bin/DAL?DalGetOneObject=y&oid=" + URLEncoder.encode(oid, "UTF-8");
+    // A full-OID read must not set DalGetOneObject. On Hyperoptic's ABVY.4 firmware,
+    // that flag means "read one selected instance" and requires an additional selector;
+    // sending it by itself makes the router return its misspelled "Missing Arguement".
+    // The stock router UI uses the plain oid form for the same status/wlan/lanhosts reads.
+    String path = "/cgi-bin/DAL?oid=" + URLEncoder.encode(oid, "UTF-8");
     return decryptResponse(request(path, "GET", null, true), oid);
   }
   public Object daoSet(String oid, Object payload, String method) throws Exception {

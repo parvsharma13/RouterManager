@@ -1,6 +1,6 @@
 # Gates: Hyperoptic mobile redesign
 
-OWNS: GATES.md, PRODUCT.md, DESIGN.md, README.md, package.json, package-lock.json, packages/shared/**, packages/frontend/**, scripts/**, RouterManager-v1.1.apk
+OWNS: GATES.md, PRODUCT.md, DESIGN.md, README.md, package.json, package-lock.json, packages/shared/**, packages/frontend/**, scripts/**, RouterManager-v1.1.1.apk
 
 Scope: ship a standalone, mobile-first Hyperoptic router app with four-tab navigation, trustworthy compatibility gating, local activity and diagnostics, documented feature tiers, and a signed APK.
 
