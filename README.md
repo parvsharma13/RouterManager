@@ -7,7 +7,7 @@
 
 Router Manager is an unofficial, open-source Android companion for Hyperoptic Internet customers using compatible Hyperhub routers. It is not affiliated with or endorsed by Hyperoptic, Zyxel, Amazon, or eero.
 
-**[Download Router Manager v1.1.2](https://github.com/parvsharma13/RouterManager/raw/main/RouterManager-v1.1.2.apk)**
+**[Download Router Manager v1.1.2](https://github.com/parvsharma13/RouterManager/releases/download/v1.1.2/RouterManager-v1.1.2.apk)** · [All releases](https://github.com/parvsharma13/RouterManager/releases)
 
 Version 1.1.2 includes the refreshed Material Design interface, Hyperoptic firmware compatibility fixes, and correct single-transaction local database writes.
 
@@ -65,7 +65,7 @@ Explicitly out of scope: cloud accounts, remote relay servers, subscriptions, te
 
 The Android app is standalone. It talks directly to your Zyxel router over your home Wi-Fi using the router's encrypted RSA/AES login and DAL protocol. Your computer, a backend server, and internet access are not required after installation.
 
-1. Download [`RouterManager-v1.1.2.apk`](https://github.com/parvsharma13/RouterManager/raw/main/RouterManager-v1.1.2.apk) directly to your Android phone (or copy it over from your computer).
+1. Download [`RouterManager-v1.1.2.apk`](https://github.com/parvsharma13/RouterManager/releases/download/v1.1.2/RouterManager-v1.1.2.apk) directly to your Android phone (or copy it over from your computer).
 2. Open it and allow installation from that file-manager app when prompted.
 3. Connect the phone to your router's Wi-Fi.
 4. Enter the router address (normally `https://192.168.1.1`) and the router admin username and password.

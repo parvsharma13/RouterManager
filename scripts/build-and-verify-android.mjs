@@ -16,7 +16,7 @@ function run(command, args, label) {
 // to already point at a real keystore. See README.md's "Release signing" section.
 run('npm', ['run', 'android:release'], 'Build signed release APK');
 
-// 2. Publish it to the path the README tells users to install from.
+// 2. Copy it to the repo root (git-ignored), ready to attach to a GitHub Release.
 const builtApk = 'packages/frontend/android/app/build/outputs/apk/release/app-release.apk';
 const publishedApk = 'RouterManager-v1.1.2.apk';
 if (!fs.existsSync(builtApk)) throw new Error(`Expected release APK at ${builtApk} after a successful build`);

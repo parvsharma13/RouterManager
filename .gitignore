@@ -20,7 +20,14 @@ packages/backend/data/*.db-*
 *.log
 npm-debug.log*
 
+# release APKs are published as GitHub Release assets, never committed
+/RouterManager-*.apk
+
+# editor settings
+.vscode/
+
 # local AI-assisted workflow state, not project content
+GATES.md
 .unlazy/
 .unlazy-hook-state.json
 .claude/settings.local.json
